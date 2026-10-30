@@ -1,6 +1,88 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>ElectroSim – Electrical Simulator</title>
-<link rel="stylesheet" href="css/style.css"></head><body>
-<header><b>⚡ ElectroSim</b><button class="run" id="bRun">▶ RUN</button><button id="bPause">⏸ PAUSE</button><button class="stop" id="bStop">■ STOP</button><span class="sp"></span><button id="bPdf">EXPORT PDF</button><button id="bSave">SAVE</button><button id="bLoad">LOAD</button><button id="bReset">RESET</button><span id="stat">STOPPED</span></header>
-<aside id="lib"></aside><div id="cv"><svg id="svg"></svg></div><aside id="props"></aside>
-<footer><div><table><thead><tr><th>Component</th><th>Voltage</th><th>Current</th><th>Power</th><th>State</th></tr></thead><tbody id="tb"></tbody></table></div><div id="msgs"></div></footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><script src="js/app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ElectroSim – Master Electrical Control Circuits</title>
+<meta name="description" content="Draw and simulate industrial control circuits in your browser with professional IEC 60617 / EPLAN-style symbols.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<header class="hdr"><div class="wrap">
+  <a class="brand" href="#top"><span class="logo">⚡</span><span>Electro<i>Sim</i></span></a>
+  <nav class="nav"><a href="#fitur">Features</a><a href="#library">Symbol library</a><a href="#cara">How it works</a><a href="#faq">FAQ</a></nav>
+  <a class="btn p sm" href="simulator.html">Open simulator</a>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <span class="pill">New · IEC 60617 / EPLAN-style symbols</span>
+  <h1>Master industrial control circuits <em>from basics to advanced</em></h1>
+  <p class="lead">Draw real control diagrams with professional symbols, wire them up and press RUN. Watch contactors pull in, lamps light and faults show up — right in your browser.</p>
+  <div class="cta"><a class="btn p" href="simulator.html">Start simulating →</a><a class="btn o" href="#library">See the symbol library</a></div>
+  <div class="shot"><div class="bar"><span></span><span></span><span></span></div><img src="assets/hero.png" alt="ElectroSim running a motor start-stop control circuit" width="1500" height="900"></div>
+  <div class="stats"><div><b id="nSym">70+</b><span>drawing symbols</span></div><div><b>A4</b><span>sheet with title block</span></div><div><b>PDF</b><span>export + parts list</span></div><div><b>0</b><span>installs – runs offline</span></div></div>
+</div></section>
+
+<section id="fitur"><div class="wrap">
+  <div class="sec-h"><span class="k">What you get</span><h2>Everything to learn control systems by doing</h2><p>Build the circuit, run it, break it, fix it. No hardware, no installation.</p></div>
+  <div class="cards">
+    <article class="card"><div class="thumb" id="th1"></div><span class="tag new">Simulator</span><h3>Live control-circuit simulation</h3>
+      <ul><li>Relay and contactor logic with seal-in latching</li><li>ON-delay and OFF-delay timers</li><li>Fuse blow, breaker trip, short-circuit and overload detection</li><li>Voltage, current and power for every part</li></ul>
+      <a class="btn p sm" href="simulator.html">Open simulator</a></article>
+    <article class="card"><div class="thumb" id="th2"></div><span class="tag">Symbols</span><h3>Professional drawing symbols</h3>
+      <ul><li>Vertical IEC 60617 / EPLAN layout with pin numbers (13-14, A1-A2, 95-96)</li><li>Coils and contacts as separate parts, linked by tag</li><li>IEC 81346 device tags: -KM1, -SB2, -FA1</li><li>Ratings printed under every device</li></ul>
+      <a class="btn o sm" href="#library">Browse the library</a></article>
+    <article class="card"><div class="thumb" id="th3"></div><span class="tag">Documentation</span><h3>Drawing sheet &amp; PDF export</h3>
+      <ul><li>A4 sheet with zone grid and title block</li><li>Junction dots, orthogonal wires with bends</li><li>One-click PDF with the diagram and a parts list</li><li>Save and load circuits in your browser</li></ul>
+      <a class="btn o sm" href="simulator.html">Try it now</a></article>
+  </div>
+</div></section>
+
+<section id="library"><div class="wrap">
+  <div class="sec-h"><span class="k">Symbol library</span><h2>The same symbols you see in real electrical drawings</h2><p>Every symbol below is the one used in the simulator – drag it onto the sheet and it behaves like the real device.</p></div>
+  <div class="chips" id="chips"></div>
+  <div class="gal" id="gal"></div>
+</div></section>
+
+<section class="dark"><div class="wrap">
+  <div class="sec-h"><span class="k">Why ElectroSim</span><h2>Built for students, teachers and technicians</h2></div>
+  <div class="why">
+    <div><div class="ic">📐</div><h3>Standard-based drawings</h3><p>Symbols, tags and terminal numbers follow IEC 60617 and IEC 81346, so what you draw looks like a real panel schematic.</p></div>
+    <div><div class="ic">🔧</div><h3>Hands-on practice</h3><p>Hold a start button, trip an overload, blow a fuse. Learn what happens when a circuit is wired wrongly – safely.</p></div>
+    <div><div class="ic">🌐</div><h3>Free and offline</h3><p>Plain HTML, CSS and JavaScript. Open the page, or host it on GitHub Pages – no server, no account.</p></div>
+  </div>
+</div></section>
+
+<section id="cara"><div class="wrap">
+  <div class="sec-h"><span class="k">How it works</span><h2>From blank sheet to running circuit in four steps</h2></div>
+  <div class="steps">
+    <div><h4>Place</h4><p>Drag symbols from the library onto the A4 sheet. Press R to rotate.</p></div>
+    <div><h4>Wire</h4><p>Click a terminal, click to add bends, click the next terminal.</p></div>
+    <div><h4>Link</h4><p>Pick a coil in “Controlled by” on each contact so it follows that coil.</p></div>
+    <div><h4>Run</h4><p>Press RUN, click switches, hold push buttons and read the results table.</p></div>
+  </div>
+</div></section>
+
+<section id="faq" style="background:#fff"><div class="wrap">
+  <div class="sec-h"><span class="k">FAQ</span><h2>Frequently asked questions</h2></div>
+  <div class="faq">
+    <details><summary>Do I need prior electrical knowledge?</summary><p>No. Start with the ready-made start-stop circuit that opens in the simulator, press RUN and change things one at a time.</p></details>
+    <details><summary>Which standard do the symbols follow?</summary><p>Symbols follow IEC 60617 in the vertical layout used by EPLAN-style diagrams, with device tags from IEC 81346 (KM, KA, KT, SB, QF, FA, HL…).</p></details>
+    <details><summary>What does the simulator calculate?</summary><p>A modified nodal analysis solver computes voltages and currents. AC is solved as steady-state RMS and motors act as resistive loads. Three-phase and PLC blocks are not included yet.</p></details>
+    <details><summary>Can I keep my drawings?</summary><p>Yes – Save stores the circuit in your browser, and Export PDF produces the A4 drawing plus a parts list.</p></details>
+  </div>
+</div></section>
+
+<section><div class="wrap"><div class="final"><h2>Ready to draw your first circuit?</h2><p>Open the simulator and run the start-stop example in seconds.</p><a class="btn a" href="simulator.html">Open simulator →</a></div></div></section>
+</main>
+
+<footer class="site"><div class="wrap"><a class="brand" href="#top"><span class="logo">⚡</span><span>Electro<i>Sim</i></span></a><span>© 2026 ElectroSim · MIT licence</span></div></footer>
+
+<script src="js/parts.js"></script>
+<script src="js/landing.js"></script>
+</body>
+</html>

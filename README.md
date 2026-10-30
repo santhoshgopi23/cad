@@ -1,29 +1,21 @@
-# ElectroSim – Electrical Simulator
+# ElectroSim – Electrical Control Simulator
 
-Browser-based electrical and industrial automation simulator (HTML, CSS, JavaScript – no build step).
+Browser-based drawing + simulation of industrial control circuits (HTML, CSS, JavaScript – no build step).
+
+- `index.html` – landing page (modelled on the structure of sinaulistrik.com)
+- `simulator.html` – the simulator
+- `js/parts.js` – symbol library (IEC 60617 / EPLAN-style, vertical layout, pin numbers, ratings)
+- `js/app.js` – MNA solver, A4 drawing sheet, UI, PDF export
+- `css/theme.css` – brand colour tokens (edit here to re-skin everything)
 
 ## Run
-Open `index.html` in a browser, or serve the folder (e.g. `python3 -m http.server`).
-To host on GitHub Pages: Settings → Pages → Deploy from branch → `main` / root.
+Open `index.html`, or serve the folder (`python3 -m http.server`). GitHub Pages: deploy from `main` / root.
 
-## Features
-- Drag-and-drop component library (EPLAN-style): DC/AC supply, battery; MCB, MCCB, fuse, isolator, thermal overload relay; switch, push buttons NO/NC, emergency stop, relay, contactor, ON-delay timer; proximity & limit switches; lamp, pilot lamp, buzzer, heater, solenoid valve, motor, resistor, capacitor, diode, transformer, terminal, voltmeter, ammeter
-- Click-to-wire terminals; move, rotate (R), delete (Del), edit parameters
-- RUN / PAUSE / STOP / SAVE / LOAD / RESET
-- Modified Nodal Analysis solver with relay/contactor logic, fuse blow, breaker trip, capacitor transient
-- Fault detection: short circuit, overload, open circuit, unconnected terminals, overvoltage
+## Using it
+Drag parts onto the sheet · click terminal → click bends → click terminal to wire · R rotates · Del deletes.
+Coils (`kc`, timers) and contacts (`cno`, `cnc`, `p3`) are separate parts: pick the coil in **Controlled by**.
+RUN, then click switches / hold push buttons. EXPORT PDF gives the A4 drawing + parts list.
 
-## Extending
-Add a new part to the `D` registry in `js/app.js` (terminals `t`, params `p`, circuit elements `el`, symbol `g`).
-The solver is in `step()`; it is independent of the drawing code.
-
-## Limitations
-AC is solved as steady-state RMS; motors are resistive loads; no 3-phase, timers or PLC blocks yet.
-
-## Library
-Grouped dropdowns (IEC 60617 style symbols): voltage sources (DC/AC/battery), fuses (glass, gG, aM, aR, NH, time-delay), circuit breakers (MCB B/C/D, MCCB, MPCB), switches/push buttons/E-stop/selector/key/SPDT, relays/timer/contactors (2P, 3P), sensors (inductive, capacitive, photoelectric, limit, pressure, temperature, level, flow), lamps, motors (AC/DC), capacitors, resistors, potentiometer, inductor, diodes/LED, transformer, instruments.
-
-Also: earth/PE reference, SMPS supply, fuse switch-disconnector, OFF-delay timer, RTD/NTC sensors, bridge rectifier, isolating transformer, plug connector, fan/pump motors. Device tags follow IEC 81346 as used by EPLAN (QF, FA, KM, KA, KT, HL, HA...).
-
-## Wiring & export
-Click a terminal to start a wire, click empty canvas to fix each bend, click another terminal to finish (Esc / right-click cancels, Backspace removes the last bend). EXPORT PDF saves the diagram plus a parts list (and simulation results while running) using jsPDF from cdnjs.
+## Adding a part
+Add an entry with `reg('key',{n,cat,pre,t,p,el,cl,g,sub})` in `js/parts.js`.
+Limitations: AC is steady-state RMS; motors are resistive loads; no 3-phase or PLC blocks yet.

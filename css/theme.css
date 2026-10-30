@@ -1,0 +1,16 @@
+/* ElectroSim theme tokens – shared by the landing page and the simulator.
+   Change the brand colours here to re-skin everything. */
+:root{
+  --brand:#1558d6;        /* primary blue  */
+  --brand-d:#0d3fa3;
+  --navy:#0a2350;         /* dark sections */
+  --accent:#ffb400;       /* electric amber */
+  --bg:#f3f6fb;--pn:#ffffff;--pn2:#f4f7fb;--bd:#dbe3ee;
+  --tx:#14202e;--mu:#62748a;
+  --ok:#12a36b;--wa:#e8590c;--er:#d93a3a;--ac:var(--brand);
+  --radius:12px;
+  --font:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--font);color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased}
