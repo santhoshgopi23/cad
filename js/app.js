@@ -79,6 +79,8 @@ function sheet(){
 /* ===== rendering ===== */
 const RV=(x,y,r)=>{const[a,b]=[[1,0],[0,1],[-1,0],[0,-1]][r%4];return[x*a-y*b,x*b+y*a]};
 const bbox=d=>d._bb||(d._bb=(()=>{const xs=d.t.map(q=>q[0]),ys=d.t.map(q=>q[1]);return[Math.min(-30,...xs)-12,Math.min(-44,...ys)-4,Math.max(30,...xs)+12,Math.max(44,...ys)+4]})());
+const COARSE=matchMedia('(pointer:coarse)'),
+ trad=d=>{if(!COARSE.matches)return 7;if(d._tr)return d._tr;let m=40;d.t.forEach((a,i)=>d.t.forEach((b,j)=>{if(j>i)m=Math.min(m,Math.hypot(a[0]-b[0],a[1]-b[1]))}));return d._tr=Math.max(8,Math.min(17,m/2-1))};
 const lblX=d=>d._lx||(d._lx=Math.max(24,Math.max(...d.t.map(q=>q[0]))+16));
 function render(){
  let h=sheet();
@@ -89,7 +91,7 @@ function render(){
  if(S.wiring){const a=tp(S.wiring.from),mq=[Math.round(S.m.x/10)*10,Math.round(S.m.y/10)*10];h+=`<path d="${route(a,mq,S.wiring.pts)}" class="wire" stroke-dasharray="5 4" stroke="var(--hot)"/>`+S.wiring.pts.map(q=>`<circle cx="${q[0]}" cy="${q[1]}" r="3" class="f"/>`).join('')}
  S.comps.forEach(c=>{const d=D[c.type],cl=d.cl?d.cl(c):0,sel=S.sel&&S.sel.k=='c'&&S.sel.id==c.id,[x0,y0,x1,y1]=bbox(d),r=c.rot%4;
   h+=`<g transform="translate(${c.x} ${c.y})" data-c="${c.id}"><g transform="rotate(${c.rot*90})"><rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="transparent"/>${sel?`<rect class="selr" x="${x0+4}" y="${y0+4}" width="${x1-x0-8}" height="${y1-y0-8}" rx="5"/>`:''}${d.g(c,c.o,cl)}`;
-  d.t.forEach(([x,y,n],i)=>h+=`<circle class="term" data-c="${c.id}" data-t="${i}" cx="${x}" cy="${y}" r="7"><title>${esc(d.pn&&d.pn(c,i)||n)}</title></circle><circle class="tdot" cx="${x}" cy="${y}" r="2.6"/>`);
+  d.t.forEach(([x,y,n],i)=>h+=`<circle class="term" data-c="${c.id}" data-t="${i}" cx="${x}" cy="${y}" r="${trad(d)}"><title>${esc(d.pn&&d.pn(c,i)||n)}</title></circle><circle class="tdot" cx="${x}" cy="${y}" r="2.6"/>`);
   h+='</g>';
   d.t.forEach(([x,y],i)=>{const n=d.pn&&d.pn(c,i)||d.t[i][2];if(!n)return;const vert=Math.abs(y)>=Math.abs(x),[px,py]=RV(vert?x+8:x-(x>0?10:-10),vert?y+(y<0?9:-9):y-6,r);h+=`<text class="pn" x="${px}" y="${py}" dy=".35em">${esc(n)}</text>`});
   const lx=lblX(d),[vx,vy]=RV(lx,0,r),an=r==0?'start':r==2?'end':'middle',lbl=d.nolbl?c.p.ref:c.label,sb=d.sub?d.sub(c):'';
@@ -98,7 +100,8 @@ function render(){
   if(c.desc)h+=`<text class="sub" style="font-style:italic" x="${vx}" y="${vy+21}" text-anchor="${an}">${esc(c.desc)}</text>`;
   h+='</g>'});
  svg.innerHTML=h}
-function tbl(){$('#tb').innerHTML=S.run?S.comps.filter(c=>c.o&&!D[c.type].gnd).map(c=>`<tr><td><b>${esc(D[c.type].nolbl?c.p.ref:c.label)}</b> <span class=mu>${D[c.type].n}</span></td><td>${f(c.o.v)} V</td><td>${f(c.o.i)} A</td><td>${f(c.o.p)} W</td><td>${stt(c)}</td></tr>`).join(''):'<tr><td colspan=5 class=mu>Press RUN to start the simulation.</td></tr>';
+function tbl(){{const b=$('#badge');b.className=!S.run?'':S.msgs.some(m=>m[0]==='er')?'er':S.msgs.some(m=>m[0]==='wa')?'wa':'ok'}
+ $('#tb').innerHTML=S.run?S.comps.filter(c=>c.o&&!D[c.type].gnd).map(c=>`<tr><td><b>${esc(D[c.type].nolbl?c.p.ref:c.label)}</b> <span class=mu>${D[c.type].n}</span></td><td>${f(c.o.v)} V</td><td>${f(c.o.i)} A</td><td>${f(c.o.p)} W</td><td>${stt(c)}</td></tr>`).join(''):'<tr><td colspan=5 class=mu>Press RUN to start the simulation.</td></tr>';
  const sup=S.comps.filter(c=>D[c.type].src&&c.o).reduce((a,c)=>a+c.o.p,0);
  $('#msgs').innerHTML=(S.run?`<div class=mu>Total supply power: <b>${f(sup)} W</b></div>`:'')+(S.run?S.msgs:[['ok','Idle – build a circuit, then press RUN']]).map(m=>`<div class="m ${m[0]}">${m[1]}</div>`).join('')}
 
@@ -125,31 +128,56 @@ $('#props').addEventListener('click',e=>{const a=e.target.dataset.a;if(!a)return
 function del(){const s=S.sel;if(!s)return;if(s.k=='w')S.wires=S.wires.filter(w=>w.id!=s.id);else{S.comps=S.comps.filter(c=>c.id!=s.id);S.wires=S.wires.filter(w=>!w.a.startsWith(s.id+'.')&&!w.b.startsWith(s.id+'.'))}S.sel=null;props()}
 
 /* ===== interaction ===== */
-const cv=$('#cv'),mp=e=>{const r=svg.getBoundingClientRect();return{x:(e.clientX-r.left)/S.z,y:(e.clientY-r.top)/S.z}};let drag=null,moved=0;
+const cv=$('#cv'),mp=e=>{const r=svg.getBoundingClientRect();return{x:(e.clientX-r.left)/S.z,y:(e.clientY-r.top)/S.z}};let drag=null,moved=0,tapBg=null,pz=null;
 const snap=v=>Math.round(v/10)*10;
-svg.addEventListener('mousedown',e=>{if(e.button)return;const m=mp(e),T=e.target.closest('[data-t]'),C=e.target.closest('[data-c]'),W=e.target.closest('[data-w]');moved=0;
+/* Pointer events = mouse + touch + pen. Taps on empty sheet are applied on pointer-up so that panning with a finger
+   (which cancels the pointer) never adds a wire bend or clears the selection by accident. */
+svg.addEventListener('pointerdown',e=>{if(e.button||!e.isPrimary)return;const m=mp(e),T=e.target.closest('[data-t]'),C=e.target.closest('[data-c]'),W=e.target.closest('[data-w]'),touch=e.pointerType==='touch';moved=0;tapBg=null;S.m=m;shut();
  if(T){const k=T.dataset.c+'.'+T.dataset.t;if(!S.wiring)S.wiring={from:k,pts:[]};else if(S.wiring.from!==k){conn(S.wiring.from,k,S.wiring.pts);S.wiring=null}return}
- if(S.wiring){S.wiring.pts.push([snap(m.x),snap(m.y)]);return}
- if(C){const c=by(+C.dataset.c);S.sel={k:'c',id:c.id};drag={c,dx:m.x-c.x,dy:m.y-c.y};props();if(S.run&&(c.type=='pb'||c.type=='pbnc'))c.s.pressed=1;return}
+ if(S.wiring){if(touch)tapBg={x:snap(m.x),y:snap(m.y)};else S.wiring.pts.push([snap(m.x),snap(m.y)]);return}
+ if(C){const c=by(+C.dataset.c);S.sel={k:'c',id:c.id};drag={c,dx:m.x-c.x,dy:m.y-c.y,sx:e.clientX,sy:e.clientY};props();if(S.run&&(c.type=='pb'||c.type=='pbnc'))c.s.pressed=1;return}
  if(W){S.sel={k:'w',id:+W.dataset.w};props();return}
- S.sel=null;props()});
-addEventListener('mousemove',e=>{const m=mp(e);S.m=m;if(drag){moved=1;drag.c.x=snap(m.x-drag.dx);drag.c.y=snap(m.y-drag.dy)}});
-addEventListener('mouseup',()=>{if(drag){const c=drag.c;if(S.run&&!moved&&D[c.type].tog){c.s.on=!c.s.on;props()}}drag=null;S.comps.forEach(c=>c.s.pressed=0)});
+ if(touch)tapBg={desel:1};else{S.sel=null;props()}});
+addEventListener('pointermove',e=>{if(!e.isPrimary)return;const m=mp(e);S.m=m;if(drag){if(!moved&&Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)<7)return;moved=1;drag.c.x=snap(m.x-drag.dx);drag.c.y=snap(m.y-drag.dy)}});
+addEventListener('pointerup',e=>{if(!e.isPrimary)return;
+ if(tapBg){if(tapBg.desel){S.sel=null;props()}else if(S.wiring)S.wiring.pts.push([tapBg.x,tapBg.y]);tapBg=null}
+ if(drag){const c=drag.c;if(S.run&&!moved&&D[c.type].tog){c.s.on=!c.s.on;props()}}drag=null;S.comps.forEach(c=>c.s.pressed=0)});
+addEventListener('pointercancel',()=>{tapBg=null;drag=null;S.comps.forEach(c=>c.s.pressed=0)});
 addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(S.wiring&&e.key=='Backspace'){S.wiring.pts.pop();return}if(e.key=='Delete'||e.key=='Backspace')del();if(e.key=='Escape')S.wiring=null;if((e.key=='r'||e.key=='R')&&S.sel&&S.sel.k=='c')by(S.sel.id).rot=(by(S.sel.id).rot+1)%4});
-svg.addEventListener('contextmenu',e=>{e.preventDefault();S.wiring=null});
+svg.addEventListener('contextmenu',e=>{e.preventDefault();if(e.pointerType!=='touch')S.wiring=null});
+/* touch: stop the browser panning/zooming the page while a part is being dragged; two fingers = pinch-zoom the sheet */
+cv.addEventListener('touchstart',e=>{
+ if(e.touches.length===2){drag=null;tapBg=null;S.comps.forEach(c=>c.s.pressed=0);const[a,b]=e.touches,r=cv.getBoundingClientRect(),cx=(a.clientX+b.clientX)/2-r.left,cy=(a.clientY+b.clientY)/2-r.top;pz={d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),z:S.z,sx:(cv.scrollLeft+cx)/S.z,sy:(cv.scrollTop+cy)/S.z};e.preventDefault();return}
+ if(e.target.closest&&e.target.closest('[data-c],[data-t],[data-w]'))e.preventDefault()},{passive:false});
+cv.addEventListener('touchmove',e=>{if(pz&&e.touches.length===2){e.preventDefault();const[a,b]=e.touches,r=cv.getBoundingClientRect(),cx=(a.clientX+b.clientX)/2-r.left,cy=(a.clientY+b.clientY)/2-r.top;setZ(pz.z*Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)/pz.d);cv.scrollLeft=pz.sx*S.z-cx;cv.scrollTop=pz.sy*S.z-cy}},{passive:false});
+cv.addEventListener('touchend',e=>{if(e.touches.length<2)pz=null});
 cv.ondragover=e=>e.preventDefault();
 cv.ondrop=e=>{e.preventDefault();const t=e.dataTransfer.getData('t');if(D[t]){const m=mp(e),c=add(t,m.x,m.y);S.sel={k:'c',id:c.id};props()}};
-function setZ(z){S.z=Math.min(2,Math.max(.4,z));svg.style.width=SW_*S.z+'px';svg.style.height=SH_*S.z+'px';$('#zl').textContent=Math.round(S.z*100)+'%'}
+function setZ(z){S.z=Math.min(3,Math.max(.25,z));svg.style.width=SW_*S.z+'px';svg.style.height=SH_*S.z+'px';$('#zl').textContent=Math.round(S.z*100)+'%'}
 $('#zi').onclick=()=>setZ(S.z*1.15);$('#zo').onclick=()=>setZ(S.z/1.15);$('#zf').onclick=()=>setZ(Math.min(1,(cv.clientWidth-16)/SW_));
 cv.addEventListener('wheel',e=>{if(e.ctrlKey){e.preventDefault();setZ(S.z*(e.deltaY<0?1.1:.9))}},{passive:false});
 
 /* ===== library ===== */
 const cats=[];Object.keys(D).forEach(k=>{if(!cats.includes(D[k].cat))cats.push(D[k].cat)});
-$('#libList').innerHTML=cats.map(cat=>`<details class="cat" open><summary>${cat}</summary><div class="tiles">${Object.keys(D).filter(t=>D[t].cat==cat).map(t=>`<div class="item" draggable="true" data-t="${t}" data-n="${esc((D[t].n+' '+cat).toLowerCase())}" title="${esc(D[t].n)}">${icon(t)}<span>${D[t].n}</span></div>`).join('')}</div></details>`).join('');
+$('#libList').innerHTML=cats.map(cat=>`<details class="cat" open><summary>${cat}</summary><div class="tiles">${Object.keys(D).filter(t=>D[t].cat==cat).map(t=>`<div class="item" draggable="${matchMedia('(pointer:fine)').matches}" data-t="${t}" data-n="${esc((D[t].n+' '+cat).toLowerCase())}" title="${esc(D[t].n)}">${icon(t)}<span>${D[t].n}</span></div>`).join('')}</div></details>`).join('');
 $('#lib').addEventListener('dragstart',e=>{const i=e.target.closest('[data-t]');if(i)e.dataTransfer.setData('t',i.dataset.t)});
-$('#lib').addEventListener('click',e=>{const i=e.target.closest('[data-t]');if(i){const c=add(i.dataset.t,(cv.scrollLeft+cv.clientWidth/2)/S.z+Math.random()*60,(cv.scrollTop+cv.clientHeight/2)/S.z+Math.random()*60);S.sel={k:'c',id:c.id};props()}});
+$('#lib').addEventListener('click',e=>{const i=e.target.closest('[data-t]');if(i){let vh=cv.clientHeight;if(MQ.matches&&B.dataset.sheet==='lib')vh=Math.max(140,$('#lib').getBoundingClientRect().top-cv.getBoundingClientRect().top);const c=add(i.dataset.t,(cv.scrollLeft+cv.clientWidth/2)/S.z+Math.random()*60-30,(cv.scrollTop+vh/2)/S.z+Math.random()*60-30);S.sel={k:'c',id:c.id};props()}});
 $('#q').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll('#libList .item').forEach(i=>i.style.display=!q||i.dataset.n.includes(q)?'':'none');document.querySelectorAll('#libList details').forEach(d=>{d.style.display=[...d.querySelectorAll('.item')].some(i=>i.style.display!=='none')?'':'none';if(q)d.open=true})});
 
+/* ===== mobile shell: bottom sheets, menu, touch action bar ===== */
+const MQ=matchMedia('(max-width:900px),(max-height:520px) and (pointer:coarse)'),B=document.body;
+function sheetTo(n){if(n)B.dataset.sheet=n;else B.removeAttribute('data-sheet');document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.sheet===n));B.classList.remove('menu')}
+function shut(){if(B.dataset.sheet&&MQ.matches)sheetTo(null);B.classList.remove('menu')}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-sheet]');if(b)sheetTo(B.dataset.sheet===b.dataset.sheet?null:b.dataset.sheet)});
+$('#sheetX').onclick=()=>sheetTo(null);
+$('#bMenu').onclick=e=>{e.stopPropagation();const o=!B.classList.contains('menu');sheetTo(B.dataset.sheet||null);B.classList.toggle('menu',o);$('#bMenu').setAttribute('aria-expanded',o)};
+$('#menu').addEventListener('click',()=>{if(!rs)B.classList.remove('menu')});
+document.addEventListener('click',e=>{if(!e.target.closest('#menu,#bMenu'))B.classList.remove('menu')});
+$('#fRot').onclick=()=>{const c=S.sel&&S.sel.k=='c'&&by(S.sel.id);if(c)c.rot=(c.rot+1)%4};
+$('#fEdit').onclick=()=>{props();sheetTo('props')};
+$('#fDel').onclick=del;
+$('#fCancel').onclick=()=>{S.wiring=null};
+function flags(){B.classList.toggle('sel',!!S.sel);B.classList.toggle('selc',!!S.sel&&S.sel.k=='c');B.classList.toggle('wiring',!!S.wiring)}
 /* ===== toolbar ===== */
 $('#bRun').onclick=()=>{if(!S.run||S.pause){setRun(1,0);step()}};$('#bPause').onclick=()=>{if(S.run)setRun(1,!S.pause)};$('#bStop').onclick=stop;
 
@@ -187,5 +215,5 @@ function demo(){
  w(km,1,g,1,[[240,640],[100,640]]);w(h1,1,g,1,[[420,640],[100,640]]);w(h2,1,g,1,[[560,640],[100,640]]);
  S.sel=null}
 demo();
-setZ(Math.min(1,(cv.clientWidth-16)/SW_)||1);props();tbl();let last=0,lt=0;
-(function loop(t){if(S.run&&!S.pause&&t-last>=20){last=t;tick();$('#stat').textContent='RUNNING · t='+S.time.toFixed(1)+'s'}render();if(t-lt>150){lt=t;tbl()}requestAnimationFrame(loop)})(0);
+setZ(MQ.matches?.75:Math.min(1,(cv.clientWidth-16)/SW_)||1);props();tbl();let last=0,lt=0;
+(function loop(t){if(S.run&&!S.pause&&t-last>=20){last=t;tick();$('#stat').textContent='RUNNING · t='+S.time.toFixed(1)+'s'}render();flags();if(t-lt>150){lt=t;tbl()}requestAnimationFrame(loop)})(0);

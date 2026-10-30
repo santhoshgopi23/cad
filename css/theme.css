@@ -1,5 +1,6 @@
 /* ElectroSim theme tokens – shared by the landing page and the simulator.
    Change the brand colours here to re-skin everything. */
+@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:200 800;font-display:swap;src:url(../fonts/plus-jakarta-sans-latin-wght-normal.woff2) format('woff2')}
 :root{
   --brand:#1558d6;        /* primary blue  */
   --brand-d:#0d3fa3;
@@ -13,4 +14,5 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 body{font-family:var(--font);color:var(--tx);background:var(--bg);-webkit-font-smoothing:antialiased}

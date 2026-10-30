@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ElectroSim – Master Electrical Control Circuits</title>
 <meta name="description" content="Draw and simulate industrial control circuits in your browser with professional IEC 60617 / EPLAN-style symbols.">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0a2350">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 <link rel="stylesheet" href="css/theme.css">
 <link rel="stylesheet" href="css/site.css">
 </head>
@@ -22,7 +25,7 @@
   <span class="pill">New · IEC 60617 / EPLAN-style symbols</span>
   <h1>Master industrial control circuits <em>from basics to advanced</em></h1>
   <p class="lead">Draw real control diagrams with professional symbols, wire them up and press RUN. Watch contactors pull in, lamps light and faults show up — right in your browser.</p>
-  <div class="cta"><a class="btn p" href="simulator.html">Start simulating →</a><a class="btn o" href="#library">See the symbol library</a></div>
+  <div class="cta"><a class="btn p" href="simulator.html">Start simulating →</a><button class="btn o" data-install hidden>Install app</button><a class="btn o" href="#library">See the symbol library</a></div>
   <div class="shot"><div class="bar"><span></span><span></span><span></span></div><img src="assets/hero.png" alt="ElectroSim running a motor start-stop control circuit" width="1500" height="900"></div>
   <div class="stats"><div><b id="nSym">70+</b><span>drawing symbols</span></div><div><b>A4</b><span>sheet with title block</span></div><div><b>PDF</b><span>export + parts list</span></div><div><b>0</b><span>installs – runs offline</span></div></div>
 </div></section>
@@ -73,6 +76,7 @@
     <details><summary>Do I need prior electrical knowledge?</summary><p>No. Start with the ready-made start-stop circuit that opens in the simulator, press RUN and change things one at a time.</p></details>
     <details><summary>Which standard do the symbols follow?</summary><p>Symbols follow IEC 60617 in the vertical layout used by EPLAN-style diagrams, with device tags from IEC 81346 (KM, KA, KT, SB, QF, FA, HL…).</p></details>
     <details><summary>What does the simulator calculate?</summary><p>A modified nodal analysis solver computes voltages and currents. AC is solved as steady-state RMS and motors act as resistive loads. Three-phase and PLC blocks are not included yet.</p></details>
+    <details><summary>Can I install it on my phone?</summary><p>Yes. Open the site in Chrome (Android) or Safari (iPhone/iPad) and choose <b>Add to Home screen</b> (Android: menu → Install app; iPhone: Share → Add to Home Screen). It then opens full-screen like an app and works offline.</p></details>
     <details><summary>Can I keep my drawings?</summary><p>Yes – Save stores the circuit in your browser, and Export PDF produces the A4 drawing plus a parts list.</p></details>
   </div>
 </div></section>
@@ -84,5 +88,6 @@
 
 <script src="js/parts.js"></script>
 <script src="js/landing.js"></script>
+<script src="js/pwa.js"></script>
 </body>
 </html>

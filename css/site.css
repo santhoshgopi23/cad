@@ -79,3 +79,6 @@ footer.site .wrap{display:flex;gap:18px;justify-content:space-between;flex-wrap:
 
 @media(max-width:900px){.cards,.why{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.nav{display:none}.hdr .btn{margin-left:auto}section{padding:60px 0}}
 @media(max-width:520px){.steps{grid-template-columns:1fr}}
+
+@media(max-width:520px){.wrap{padding:0 16px}.hdr .wrap{height:60px;gap:12px}.hero{padding:44px 0 28px}.hero p.lead{font-size:16.5px}.btn{padding:13px 20px}.cta .btn{flex:1 1 100%;justify-content:center}.stats{gap:22px 30px}.card{padding:20px}.gal{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}.final{padding:40px 18px;border-radius:18px}.shot{margin-top:32px}}
+body{padding-bottom:env(safe-area-inset-bottom)}
