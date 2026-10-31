@@ -1,93 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ElectroSim – Master Electrical Control Circuits</title>
-<meta name="description" content="Draw and simulate industrial control circuits in your browser with professional IEC 60617 / EPLAN-style symbols.">
-<meta name="theme-color" content="#0a2350">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-<link rel="stylesheet" href="css/theme.css">
-<link rel="stylesheet" href="css/site.css">
-</head>
+<title>ElectroSim – Electrical Simulator</title>
+<link rel="stylesheet" href="css/style.css"></head>
 <body>
-<header class="hdr"><div class="wrap">
-  <a class="brand" href="#top"><span class="logo">⚡</span><span>Electro<i>Sim</i></span></a>
-  <nav class="nav"><a href="#fitur">Features</a><a href="#library">Symbol library</a><a href="#cara">How it works</a><a href="#faq">FAQ</a></nav>
-  <a class="btn p sm" href="simulator.html">Open simulator</a>
-</div></header>
-
-<main id="top">
-<section class="hero"><div class="wrap">
-  <span class="pill">New · IEC 60617 / EPLAN-style symbols</span>
-  <h1>Master industrial control circuits <em>from basics to advanced</em></h1>
-  <p class="lead">Draw real control diagrams with professional symbols, wire them up and press RUN. Watch contactors pull in, lamps light and faults show up — right in your browser.</p>
-  <div class="cta"><a class="btn p" href="simulator.html">Start simulating →</a><button class="btn o" data-install hidden>Install app</button><a class="btn o" href="#library">See the symbol library</a></div>
-  <div class="shot"><div class="bar"><span></span><span></span><span></span></div><img src="assets/hero.png" alt="ElectroSim running a motor start-stop control circuit" width="1500" height="900"></div>
-  <div class="stats"><div><b id="nSym">70+</b><span>drawing symbols</span></div><div><b>A4</b><span>sheet with title block</span></div><div><b>PDF</b><span>export + parts list</span></div><div><b>0</b><span>installs – runs offline</span></div></div>
-</div></section>
-
-<section id="fitur"><div class="wrap">
-  <div class="sec-h"><span class="k">What you get</span><h2>Everything to learn control systems by doing</h2><p>Build the circuit, run it, break it, fix it. No hardware, no installation.</p></div>
-  <div class="cards">
-    <article class="card"><div class="thumb" id="th1"></div><span class="tag new">Simulator</span><h3>Live control-circuit simulation</h3>
-      <ul><li>Relay and contactor logic with seal-in latching</li><li>ON-delay and OFF-delay timers</li><li>Fuse blow, breaker trip, short-circuit and overload detection</li><li>Voltage, current and power for every part</li></ul>
-      <a class="btn p sm" href="simulator.html">Open simulator</a></article>
-    <article class="card"><div class="thumb" id="th2"></div><span class="tag">Symbols</span><h3>Professional drawing symbols</h3>
-      <ul><li>Vertical IEC 60617 / EPLAN layout with pin numbers (13-14, A1-A2, 95-96)</li><li>Coils and contacts as separate parts, linked by tag</li><li>IEC 81346 device tags: -KM1, -SB2, -FA1</li><li>Ratings printed under every device</li></ul>
-      <a class="btn o sm" href="#library">Browse the library</a></article>
-    <article class="card"><div class="thumb" id="th3"></div><span class="tag">Documentation</span><h3>Drawing sheet &amp; PDF export</h3>
-      <ul><li>A4 sheet with zone grid and title block</li><li>Junction dots, orthogonal wires with bends</li><li>One-click PDF with the diagram and a parts list</li><li>Save and load circuits in your browser</li></ul>
-      <a class="btn o sm" href="simulator.html">Try it now</a></article>
-  </div>
-</div></section>
-
-<section id="library"><div class="wrap">
-  <div class="sec-h"><span class="k">Symbol library</span><h2>The same symbols you see in real electrical drawings</h2><p>Every symbol below is the one used in the simulator – drag it onto the sheet and it behaves like the real device.</p></div>
-  <div class="chips" id="chips"></div>
-  <div class="gal" id="gal"></div>
-</div></section>
-
-<section class="dark"><div class="wrap">
-  <div class="sec-h"><span class="k">Why ElectroSim</span><h2>Built for students, teachers and technicians</h2></div>
-  <div class="why">
-    <div><div class="ic">📐</div><h3>Standard-based drawings</h3><p>Symbols, tags and terminal numbers follow IEC 60617 and IEC 81346, so what you draw looks like a real panel schematic.</p></div>
-    <div><div class="ic">🔧</div><h3>Hands-on practice</h3><p>Hold a start button, trip an overload, blow a fuse. Learn what happens when a circuit is wired wrongly – safely.</p></div>
-    <div><div class="ic">🌐</div><h3>Free and offline</h3><p>Plain HTML, CSS and JavaScript. Open the page, or host it on GitHub Pages – no server, no account.</p></div>
-  </div>
-</div></section>
-
-<section id="cara"><div class="wrap">
-  <div class="sec-h"><span class="k">How it works</span><h2>From blank sheet to running circuit in four steps</h2></div>
-  <div class="steps">
-    <div><h4>Place</h4><p>Drag symbols from the library onto the A4 sheet. Press R to rotate.</p></div>
-    <div><h4>Wire</h4><p>Click a terminal, click to add bends, click the next terminal.</p></div>
-    <div><h4>Link</h4><p>Pick a coil in “Controlled by” on each contact so it follows that coil.</p></div>
-    <div><h4>Run</h4><p>Press RUN, click switches, hold push buttons and read the results table.</p></div>
-  </div>
-</div></section>
-
-<section id="faq" style="background:#fff"><div class="wrap">
-  <div class="sec-h"><span class="k">FAQ</span><h2>Frequently asked questions</h2></div>
-  <div class="faq">
-    <details><summary>Do I need prior electrical knowledge?</summary><p>No. Start with the ready-made start-stop circuit that opens in the simulator, press RUN and change things one at a time.</p></details>
-    <details><summary>Which standard do the symbols follow?</summary><p>Symbols follow IEC 60617 in the vertical layout used by EPLAN-style diagrams, with device tags from IEC 81346 (KM, KA, KT, SB, QF, FA, HL…).</p></details>
-    <details><summary>What does the simulator calculate?</summary><p>A modified nodal analysis solver computes voltages and currents. AC is solved as steady-state RMS and motors act as resistive loads. Three-phase and PLC blocks are not included yet.</p></details>
-    <details><summary>Can I install it on my phone?</summary><p>Yes. Open the site in Chrome (Android) or Safari (iPhone/iPad) and choose <b>Add to Home screen</b> (Android: menu → Install app; iPhone: Share → Add to Home Screen). It then opens full-screen like an app and works offline.</p></details>
-    <details><summary>Can I keep my drawings?</summary><p>Yes – Save stores the circuit in your browser, and Export PDF produces the A4 drawing plus a parts list.</p></details>
-  </div>
-</div></section>
-
-<section><div class="wrap"><div class="final"><h2>Ready to draw your first circuit?</h2><p>Open the simulator and run the start-stop example in seconds.</p><a class="btn a" href="simulator.html">Open simulator →</a></div></div></section>
+<header>
+ <button class="ic" id="tLib" title="Component library" aria-label="Component library">☰</button>
+ <b class="logo">⚡ <span class="lbl">ElectroSim</span></b>
+ <button class="run" id="bRun" title="Run">▶<span class="lbl"> RUN</span></button>
+ <button id="bPause" title="Pause">⏸<span class="lbl"> PAUSE</span></button>
+ <button class="stop" id="bStop" title="Stop">■<span class="lbl"> STOP</span></button>
+ <span class="sp"></span>
+ <span id="stat">STOPPED</span>
+ <button id="bTB" title="Sheet setup (paper, frame, project)">▤<span class="lbl"> Sheet</span></button>
+ <button class="pri" id="bPDF" title="Export PDF">⇩<span class="lbl"> PDF</span></button>
+ <div class="mw"><button class="ic" id="bMore" title="More" aria-label="More">⋯</button>
+  <div id="menu"><button id="mRes">Show / hide results</button><button id="mPg">Show / hide sheet tabs</button><hr><button id="bSave">Save in browser</button><button id="bLoad">Load from browser</button><button id="bDown">Download project file</button><button id="bOpen">Open project file…</button><button id="bReset">Clear all pages</button></div></div>
+ <button class="ic" id="tProps" title="Properties" aria-label="Properties">⚙</button>
+</header>
+<main id="main">
+ <aside id="lib"><div class="in"><input id="q" type="search" placeholder="Search components" aria-label="Search components"><div id="libList"></div></div></aside>
+ <div id="cv">
+  <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+  <button class="edge l" id="hL" title="Hide / show library">‹</button><button class="edge r" id="hR" title="Hide / show properties">›</button>
+  <div id="tools" role="toolbar" aria-label="Drawing tools">
+   <button data-tool="sel" aria-pressed="true" title="Select / move (Esc)"><svg viewBox="0 0 20 20"><path d="M5 3l11 6.5-5 1.4L8.6 16z"/></svg><span class="tl">Select</span></button>
+   <button data-tool="line" title="Draw a line"><svg viewBox="0 0 20 20"><path d="M4 16L16 4"/><circle cx="4" cy="16" r="1.6"/><circle cx="16" cy="4" r="1.6"/></svg><span class="tl">Line</span></button>
+   <button data-tool="rect" title="Draw a rectangle"><svg viewBox="0 0 20 20"><rect x="3.5" y="5.5" width="13" height="9"/></svg><span class="tl">Box</span></button>
+   <button data-tool="text" title="Add text"><svg viewBox="0 0 20 20"><path d="M4.5 5.5h11M10 5.5V16"/></svg><span class="tl">Text</span></button>
+   <button data-tool="img" title="Add a logo / picture"><svg viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="12" rx="1.5"/><circle cx="7.5" cy="8.5" r="1.4"/><path d="M4 15l4.2-4 3 2.8 2-1.8L17 15"/></svg><span class="tl">Logo</span></button>
+  </div><div id="thint"></div>
+  <div id="rest"><button id="rPg">▴ Sheet tabs</button><button id="rRes">▴ Results</button></div>
+  <div id="zc"><button id="zOut" aria-label="Zoom out">−</button><span id="zv">100%</span><button id="zIn" aria-label="Zoom in">+</button><button id="zFit" title="Fit page">Fit</button></div>
+  <div id="sbar"><button data-a="rot" class="nw nr">⟳ Rotate</button><button data-a="dup" class="nw">⧉ Copy</button><button data-a="edit">✎ Edit</button><button data-a="del" class="dn">🗑 Delete</button></div>
+  <div id="toast"></div>
+ </div>
+ <aside id="props"><div class="in" id="propsBody"></div></aside>
 </main>
+<nav id="pages"><div id="pgs"></div><button id="pgAdd" class="pri" title="Add a new page">＋ Page</button><button id="pgHide" class="ic sm" title="Hide sheet tabs" aria-label="Hide sheet tabs">▾</button></nav>
+<footer id="ft">
+ <div class="fh"><b>Simulation results</b><button id="fTog" class="ic sm" title="Hide results" aria-label="Hide results">▾</button></div>
+ <div class="fb"><div class="fl"><table><thead><tr><th>Component</th><th>Voltage</th><th>Current</th><th>Power</th><th>State</th><th>Pg</th></tr></thead><tbody id="tb"></tbody></table></div><div id="msgs"></div></div>
+</footer>
 
-<footer class="site"><div class="wrap"><a class="brand" href="#top"><span class="logo">⚡</span><span>Electro<i>Sim</i></span></a><span>© 2026 ElectroSim · MIT licence</span></div></footer>
+<dialog id="dTB"><form method="dialog"><h2>Sheet setup</h2>
+ <div class="two"><label>Paper<select data-tb="paper"><option value="A4">A4 landscape</option><option value="A3">A3 landscape</option></select></label>
+  <label class="ck" style="margin-top:22px"><input type="checkbox" id="tbFrame">Border &amp; zone markers</label></div>
+ <h3>Project (used on the parts list)</h3>
+ <div class="two"><label>Project<input data-tb="project"></label><label>Drawing no.<input data-tb="dwgNo"></label></div>
+ <div class="two"><label>Revision<input data-tb="rev"></label><label>Date<input data-tb="date"></label></div>
+ <h3>Your own title block</h3>
+ <p class="mu">There is no fixed title block. Use the <b>Line</b>, <b>Box</b>, <b>Text</b> and <b>Logo</b> tools on the left of the sheet to draw yours, then tick <i>Show on every page</i> in the right-hand panel. In a text you can type <code>{page}</code>, <code>{pages}</code>, <code>{title}</code>, <code>{project}</code>, <code>{dwgno}</code>, <code>{rev}</code> or <code>{date}</code> and it is filled in on each sheet.</p>
+ <div class="act"><button class="pri" data-close>Done</button></div></form></dialog>
 
-<script src="js/parts.js"></script>
-<script src="js/landing.js"></script>
-<script src="js/pwa.js"></script>
-</body>
-</html>
+<dialog id="dPG"><form method="dialog"><h2>Page settings</h2>
+ <label>Page title<input id="pgTitle"></label>
+ <div class="lr"><button type="button" id="pgL">◀ Move left</button><button type="button" id="pgR">Move right ▶</button></div>
+ <div class="act"><button type="button" id="pgDel" class="dn">Delete page</button><button class="pri" data-close>Done</button></div></form></dialog>
+
+<dialog id="dPDF"><form method="dialog"><h2>Export PDF</h2>
+ <label class="ck"><input type="checkbox" id="xSheets" checked>Drawing sheets (every page, with title block)</label>
+ <label class="ck"><input type="checkbox" id="xBom" checked>Parts list (styled table with symbols)</label>
+ <p class="mu">Fill in manufacturer and part number in each component’s properties to complete the parts list.</p>
+ <div id="xProg" class="mu" role="status"></div>
+ <div class="act"><button type="button" data-close>Close</button><button type="button" class="pri" id="xGo">Export PDF</button></div></form></dialog>
+<input type="file" id="fileIn" accept=".json,application/json" hidden><input type="file" id="imgIn" accept="image/*" hidden>
+<script src="js/vendor/jspdf.umd.min.js"></script>
+<script src="js/registry.js"></script><script src="js/solver.js"></script><script src="js/draw.js"></script><script src="js/export.js"></script><script src="js/app.js"></script>
+</body></html>
