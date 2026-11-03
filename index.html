@@ -1,38 +1,34 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f2a43"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" type="image/png" href="icons/icon-192.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ElectroSim"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>ElectroSim – Electrical Simulator</title>
 <link rel="stylesheet" href="css/style.css"></head>
 <body>
-<header>
+
+<div id="ribbon"><div id="rtop">
  <button class="ic" id="tLib" title="Component library" aria-label="Component library">☰</button>
- <b class="logo">⚡ <span class="lbl">ElectroSim</span></b>
- <button class="run" id="bRun" title="Run">▶<span class="lbl"> RUN</span></button>
- <button id="bPause" title="Pause">⏸<span class="lbl"> PAUSE</span></button>
- <button class="stop" id="bStop" title="Stop">■<span class="lbl"> STOP</span></button>
- <span class="sp"></span>
+ <b class="logo">⚡<span class="lbl"> ElectroSim</span></b>
+ <div id="rtabs" role="tablist"></div><span class="sp"></span>
  <span id="stat">STOPPED</span>
- <button id="bTB" title="Sheet setup (paper, frame, project)">▤<span class="lbl"> Sheet</span></button>
- <button class="pri" id="bPDF" title="Export PDF">⇩<span class="lbl"> PDF</span></button>
+ <button class="ic run" id="bRun" title="Run simulation" aria-label="Run">▶</button><button class="ic" id="bPause" title="Pause" aria-label="Pause">⏸</button><button class="ic stop" id="bStop" title="Stop" aria-label="Stop">■</button>
+ <span class="vs"></span>
+ <button class="ic" id="bTB" title="Sheet setup (paper, frame, project)" aria-label="Sheet setup">▤</button><button class="ic pri" id="bPDF" title="Plot / print to PDF" aria-label="Print">⎙</button>
  <div class="mw"><button class="ic" id="bMore" title="More" aria-label="More">⋯</button>
-  <div id="menu"><button id="mRes">Show / hide results</button><button id="mPg">Show / hide sheet tabs</button><hr><button id="bSave">Save in browser</button><button id="bLoad">Load from browser</button><button id="bDown">Download project file</button><button id="bOpen">Open project file…</button><button id="bReset">Clear all pages</button></div></div>
+  <div id="menu"><button id="mRes">Show / hide results</button><button id="mPg">Show / hide sheet tabs</button><hr><button id="mInstall" data-pwa-install>⬇ Download app</button><button id="bSave">Save in browser</button><button id="bLoad">Load from browser</button><button id="bDown">Download project file</button><button id="bOpen">Open project file…</button><button id="bReset">Clear all pages</button></div></div>
  <button class="ic" id="tProps" title="Properties" aria-label="Properties">⚙</button>
-</header>
+</div><div id="rbody"></div></div>
 <main id="main">
  <aside id="lib"><div class="in"><input id="q" type="search" placeholder="Search components" aria-label="Search components"><div id="libList"></div></div></aside>
  <div id="cv">
   <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
   <button class="edge l" id="hL" title="Hide / show library">‹</button><button class="edge r" id="hR" title="Hide / show properties">›</button>
-  <div id="tools" role="toolbar" aria-label="Drawing tools">
-   <button data-tool="sel" aria-pressed="true" title="Select / move (Esc)"><svg viewBox="0 0 20 20"><path d="M5 3l11 6.5-5 1.4L8.6 16z"/></svg><span class="tl">Select</span></button>
-   <button data-tool="line" title="Draw a line"><svg viewBox="0 0 20 20"><path d="M4 16L16 4"/><circle cx="4" cy="16" r="1.6"/><circle cx="16" cy="4" r="1.6"/></svg><span class="tl">Line</span></button>
-   <button data-tool="rect" title="Draw a rectangle"><svg viewBox="0 0 20 20"><rect x="3.5" y="5.5" width="13" height="9"/></svg><span class="tl">Box</span></button>
-   <button data-tool="text" title="Add text"><svg viewBox="0 0 20 20"><path d="M4.5 5.5h11M10 5.5V16"/></svg><span class="tl">Text</span></button>
-   <button data-tool="img" title="Add a logo / picture"><svg viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="12" rx="1.5"/><circle cx="7.5" cy="8.5" r="1.4"/><path d="M4 15l4.2-4 3 2.8 2-1.8L17 15"/></svg><span class="tl">Logo</span></button>
-  </div><div id="thint"></div>
+<div id="thint"></div>
   <div id="rest"><button id="rPg">▴ Sheet tabs</button><button id="rRes">▴ Results</button></div>
   <div id="zc"><button id="zOut" aria-label="Zoom out">−</button><span id="zv">100%</span><button id="zIn" aria-label="Zoom in">+</button><button id="zFit" title="Fit page">Fit</button></div>
   <div id="sbar"><button data-a="rot" class="nw nr">⟳ Rotate</button><button data-a="dup" class="nw">⧉ Copy</button><button data-a="edit">✎ Edit</button><button data-a="del" class="dn">🗑 Delete</button></div>
+  <div id="cmd"><span class="cp">Command</span><input id="cmdIn" type="text" autocomplete="off" spellcheck="false" placeholder="Type a command – L line, C circle, T text, RO rotate, PLOT …" aria-label="Command line"><div id="cmdSug"></div></div>
+  <div id="sts"><span id="xy">X 0.0  Y 0.0 mm</span><button data-st="grid" title="Grid display (F7)">GRID</button><button data-st="snap" title="Snap to grid (F9)">SNAP</button><button data-st="ortho" title="Ortho – straight lines only (F8)">ORTHO</button></div>
   <div id="toast"></div>
  </div>
  <aside id="props"><div class="in" id="propsBody"></div></aside>
@@ -44,13 +40,14 @@
 </footer>
 
 <dialog id="dTB"><form method="dialog"><h2>Sheet setup</h2>
- <div class="two"><label>Paper<select data-tb="paper"><option value="A4">A4 landscape</option><option value="A3">A3 landscape</option></select></label>
-  <label class="ck" style="margin-top:22px"><input type="checkbox" id="tbFrame">Border &amp; zone markers</label></div>
+ <div class="two"><label>Paper<select data-tb="paper"><option value="A5">A5</option><option value="A4">A4</option><option value="A3">A3</option><option value="A2">A2</option></select></label>
+  <label>Orientation<select data-tb="orient"><option value="L">Landscape</option><option value="P">Portrait</option></select></label></div>
+ <div class="two"><label class="ck"><input type="checkbox" id="tbFrame">Border &amp; zone markers</label></div>
  <h3>Project (used on the parts list)</h3>
  <div class="two"><label>Project<input data-tb="project"></label><label>Drawing no.<input data-tb="dwgNo"></label></div>
  <div class="two"><label>Revision<input data-tb="rev"></label><label>Date<input data-tb="date"></label></div>
  <h3>Your own title block</h3>
- <p class="mu">There is no fixed title block. Use the <b>Line</b>, <b>Box</b>, <b>Text</b> and <b>Logo</b> tools on the left of the sheet to draw yours, then tick <i>Show on every page</i> in the right-hand panel. In a text you can type <code>{page}</code>, <code>{pages}</code>, <code>{title}</code>, <code>{project}</code>, <code>{dwgno}</code>, <code>{rev}</code> or <code>{date}</code> and it is filled in on each sheet.</p>
+ <p class="mu">There is no fixed title block. Use the <b>Line</b>, <b>Box</b>, <b>Text</b> and <b>Logo</b> tools in the ribbon at the top (Home tab) to draw yours, then tick <i>Show on every page</i> in the right-hand panel. In a text you can type <code>{page}</code>, <code>{pages}</code>, <code>{title}</code>, <code>{project}</code>, <code>{dwgno}</code>, <code>{rev}</code> or <code>{date}</code> and it is filled in on each sheet.</p>
  <div class="act"><button class="pri" data-close>Done</button></div></form></dialog>
 
 <dialog id="dPG"><form method="dialog"><h2>Page settings</h2>
@@ -58,13 +55,17 @@
  <div class="lr"><button type="button" id="pgL">◀ Move left</button><button type="button" id="pgR">Move right ▶</button></div>
  <div class="act"><button type="button" id="pgDel" class="dn">Delete page</button><button class="pri" data-close>Done</button></div></form></dialog>
 
-<dialog id="dPDF"><form method="dialog"><h2>Export PDF</h2>
- <label class="ck"><input type="checkbox" id="xSheets" checked>Drawing sheets (every page, with title block)</label>
+<dialog id="dPDF"><form method="dialog"><h2>Plot / Print to PDF</h2>
+ <div class="plot"><div class="pf"><label>Paper size<select id="xPaper"><option value="A5">A5 (148 × 210 mm)</option><option value="A4">A4 (210 × 297 mm)</option><option value="A3">A3 (297 × 420 mm)</option><option value="A2">A2 (420 × 594 mm)</option></select></label>
+  <label>Drawing orientation<select id="xOrient"><option value="L">Landscape</option><option value="P">Portrait</option></select></label>
+  <label>Sheets to plot<select id="xRange"><option value="all">All sheets</option><option value="cur">Current sheet only</option></select></label></div>
+  <div class="pv"><div id="xPrev"><span></span></div><small id="xPrevT" class="mu"></small></div></div>
+ <label class="ck"><input type="checkbox" id="xSheets" checked>Drawing sheets (with your title block)</label>
  <label class="ck"><input type="checkbox" id="xBom" checked>Parts list (styled table with symbols)</label>
- <p class="mu">Fill in manufacturer and part number in each component’s properties to complete the parts list.</p>
+ <p class="mu">The parts list is always printed landscape. Fill in manufacturer and part number in each component’s properties to complete it.</p>
  <div id="xProg" class="mu" role="status"></div>
- <div class="act"><button type="button" data-close>Close</button><button type="button" class="pri" id="xGo">Export PDF</button></div></form></dialog>
+ <div class="act"><button type="button" data-close>Close</button><button type="button" class="pri" id="xGo">Plot / Save PDF</button></div></form></dialog>
 <input type="file" id="fileIn" accept=".json,application/json" hidden><input type="file" id="imgIn" accept="image/*" hidden>
 <script src="js/vendor/jspdf.umd.min.js"></script>
-<script src="js/registry.js"></script><script src="js/solver.js"></script><script src="js/draw.js"></script><script src="js/export.js"></script><script src="js/app.js"></script>
+<script src="js/registry.js"></script><script src="js/parts2.js"></script><script src="js/plc.js"></script><script src="js/hmi.js"></script><script src="js/hmip.js"></script><script src="js/hmid.js"></script><script src="js/transmitters.js"></script><script src="js/valves.js"></script><script src="js/pneumatic.js"></script><script src="js/evalve.js"></script><script src="js/mfm.js"></script><script src="js/solver.js"></script><script src="js/draw.js"></script><script src="js/export.js"></script><script src="js/pwa.js"></script><script src="js/app.js"></script>
 </body></html>

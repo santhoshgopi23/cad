@@ -1,28 +1,12 @@
-/* ElectroSim service worker – offline support.
-   Network-first (so updates show immediately when online), cache fallback when offline.
-   Bump CACHE when you want to force-clear old files. */
-const CACHE = 'electrosim-v1';
-const ASSETS = [
-  './', './index.html', './simulator.html', './manifest.webmanifest',
-  './css/theme.css', './css/site.css', './css/app.css',
-  './js/parts.js', './js/app.js', './js/landing.js', './js/pwa.js',
-  './vendor/jspdf.umd.min.js', './fonts/plus-jakarta-sans-latin-wght-normal.woff2',
-  './assets/hero.png', './assets/icons/icon-192.png', './assets/icons/icon-512.png',
-  './assets/icons/apple-touch-icon.png', './assets/icons/favicon-32.png', './assets/icons/icon.svg'
-];
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
-});
-self.addEventListener('fetch', e => {
-  const r = e.request;
-  if (r.method !== 'GET' || new URL(r.url).origin !== location.origin) return;
-  e.respondWith(
-    fetch(r).then(res => {
-      if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(r, copy)); }
-      return res;
-    }).catch(() => caches.match(r, { ignoreSearch: true }).then(m => m || (r.mode === 'navigate' ? caches.match('./simulator.html') : Response.error())))
-  );
+/* ElectroSim service worker – caches the app so it installs and also works offline. */
+const CACHE='electrosim-v8.21-pwa2';
+const FILES=["./", "index.html", "manifest.webmanifest", "css/style.css", "js/app.js", "js/draw.js", "js/evalve.js", "js/export.js", "js/hmi.js", "js/hmid.js", "js/hmip.js", "js/mfm.js", "js/parts2.js", "js/plc.js", "js/pneumatic.js", "js/registry.js", "js/solver.js", "js/transmitters.js", "js/valves.js", "js/vendor/jspdf.umd.min.js", "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png", "examples/cda_sov_actuator.json", "examples/electric_modulating_valve.json", "examples/hmi_process_graphics.json", "examples/mfm_ct_operated.json", "examples/mfm_ct_pt_operated.json"];
+self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>Promise.all(FILES.map(f=>c.add(f).catch(()=>0)))).then(()=>self.skipWaiting()))});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',e=>{
+ if(e.request.method!=='GET')return;
+ const u=new URL(e.request.url);if(u.origin!==location.origin)return;
+ /* network first (so updates arrive), cache as the offline fallback */
+ e.respondWith(fetch(e.request).then(r=>{if(r&&r.ok){const cp=r.clone();caches.open(CACHE).then(c=>c.put(e.request,cp))}return r})
+  .catch(()=>caches.match(e.request,{ignoreSearch:true}).then(m=>m||(e.request.mode==='navigate'?caches.match('index.html'):undefined))));
 });

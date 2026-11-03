@@ -1,16 +1,32 @@
 {
-  "name": "ElectroSim – Electrical Control Simulator",
+  "name": "ElectroSim – Electrical Simulator",
   "short_name": "ElectroSim",
-  "description": "Draw and simulate industrial control circuits with IEC 60617 symbols.",
-  "start_url": "./simulator.html",
+  "description": "Electrical and industrial automation simulator",
+  "id": "./",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#0a2350",
-  "theme_color": "#0a2350",
+  "background_color": "#0f2a43",
+  "theme_color": "#0f2a43",
   "icons": [
-    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
