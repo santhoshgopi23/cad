@@ -5,10 +5,6 @@ body{background:var(--bg);color:var(--tx);font:13px/1.35 system-ui,-apple-system
 button,input,select{font:inherit}
 button{background:var(--pn2);color:var(--tx);border:1px solid var(--bd);border-radius:6px;padding:6px 11px;font-weight:600;font-size:12px;cursor:pointer;min-height:32px}button:hover:not(:disabled){border-color:var(--ac)}button:disabled{opacity:.45;cursor:default}
 button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
-header{flex:none;display:flex;align-items:center;gap:6px;padding:6px 10px;padding-top:calc(6px + env(safe-area-inset-top,0px));padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px));background:var(--nv);color:#fff}
-header button{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.22)}header button:hover{border-color:#fff}
-header button[aria-pressed=true]{background:rgba(255,255,255,.24)}
-header .run{background:#13a06f;border-color:#13a06f}header .stop{background:#c93838;border-color:#c93838}header .pri{background:#18a096;border-color:#18a096}
 .logo{font-size:15px;margin:0 8px 0 2px;white-space:nowrap}.sp{flex:1}
 #stat{padding:4px 10px;border-radius:12px;background:rgba(255,255,255,.12);font-weight:700;font-size:11px;white-space:nowrap}
 .ic{width:36px;padding:0;font-size:16px}.ic.sm{width:28px;min-height:24px;font-size:12px;padding:0}
@@ -54,7 +50,7 @@ dialog{border:1px solid var(--bd);border-radius:12px;background:var(--pn);color:
 @media (pointer:coarse){button{min-height:40px}.ic.sm{min-height:32px;width:36px}input,select{min-height:40px;font-size:16px}#q{font-size:16px}.edge{width:24px}}
 @media (max-width:1000px){.lbl{display:none}.logo .lbl{display:inline}}
 @media (max-width:760px){
- .logo .lbl,#stat{display:none}header{gap:5px}header button{padding:0;width:38px}
+ .logo .lbl,#stat{display:none}
  #main{display:block}#cv{position:absolute;inset:0}
  #lib,#props{position:absolute;top:0;bottom:0;z-index:20;width:min(86vw,320px);transition:transform .22s ease;box-shadow:0 0 24px rgba(0,0,0,.35)}
  #lib{left:0}#props{right:0}#lib .in,#props .in{width:100%}
@@ -102,3 +98,287 @@ textarea{width:100%;margin-top:2px;padding:6px 7px;background:var(--bg);color:va
 code{background:var(--pn2);padding:0 4px;border-radius:3px;font-size:11.5px}
 @media (pointer:coarse){#tools button{min-height:40px}.sw{height:34px}input[type=color]{height:40px}}
 @media (max-width:760px){#tools .tl{display:none}#tools button{padding:3px 10px}#thint{top:60px}#rest{bottom:8px}}
+
+/* ---- AutoCAD-style ribbon ---- */
+#ribbon{flex:none;background:#2b3441;color:#d6dde6;border-bottom:1px solid #141a22;user-select:none}
+#rtabs{display:flex;gap:0;background:#1f2630;overflow-x:auto;scrollbar-width:none}
+#rtabs button{background:transparent;border:0;border-radius:0;color:#aab6c3;min-height:26px;padding:4px 14px;font-weight:500;font-size:12.5px;border-bottom:2px solid transparent}
+#rtabs button:hover{color:#fff;background:rgba(255,255,255,.06)}
+#rtabs button[aria-selected=true]{color:#fff;background:#2b3441;border-bottom-color:#4aa3ff}
+#rbody{display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:thin;min-height:78px;padding:3px 4px 0}
+.rp{display:flex;flex-direction:column;border-right:1px solid #3d4756;padding:0 6px;flex:none}
+.rp .ri{display:flex;gap:1px;flex:1;align-items:stretch}
+.rp .rn{text-align:center;font-size:11px;color:#9aa8b8;padding:2px 0 3px;white-space:nowrap}
+#ribbon .rb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:50px;min-height:58px;padding:4px 6px;background:transparent;border:1px solid transparent;border-radius:4px;color:#e4eaf1;font-weight:400;font-size:11.5px}
+#ribbon .rb svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#ribbon .rb svg .fl{fill:currentColor;stroke:none}
+#ribbon .rb:hover:not(:disabled){background:rgba(255,255,255,.1);border-color:#5b6878}
+#ribbon .rb[aria-pressed=true]{background:#2f6fb3;border-color:#5aa9ff;color:#fff}
+#ribbon .rb:disabled{opacity:.35}
+#ribbon .rb.sm{min-height:0;flex-direction:row;gap:6px;padding:3px 7px;min-width:0}
+#ribbon .rb.sm svg{width:18px;height:18px}
+.rsel{display:flex;flex-direction:column;justify-content:center;gap:5px;padding:0 6px}
+.rsel label{display:flex;align-items:center;gap:6px;margin:0;color:#c2ccd7;font-size:11.5px;white-space:nowrap}
+.rsel select{width:auto;min-width:96px;margin:0;min-height:24px;padding:2px 6px;background:#1c232d;color:#e4eaf1;border-color:#4a5565}
+.rstack{display:flex;flex-direction:column;justify-content:center;gap:2px}
+#thint{top:10px}
+.plot{display:grid;grid-template-columns:1fr 130px;gap:14px;align-items:center}.plot .pv{display:flex;flex-direction:column;align-items:center;gap:6px}
+#xPrev{width:110px;height:110px;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--bd);border-radius:6px}
+#xPrev span{display:block;background:#fff;border:1.5px solid var(--ac);box-shadow:0 2px 8px rgba(0,0,0,.25);transition:all .15s}
+@media (max-width:760px){.plot{grid-template-columns:1fr}#ribbon .rb{min-width:44px;font-size:10.5px}}
+
+/* ---- merged top bar (tabs left, run / stop / tools right) ---- */
+#rtop{display:flex;align-items:center;gap:3px;background:#1f2630;padding:0 6px;padding-top:env(safe-area-inset-top,0px);padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
+#rtop .logo{color:#fff;font-size:13px;margin:0 6px 0 2px;white-space:nowrap}
+#rtabs{flex:0 1 auto;min-width:0}
+#rtop .sp{flex:1}
+#rtop button.ic{width:28px;min-height:24px;height:24px;padding:0;font-size:13px;line-height:1;background:rgba(255,255,255,.08);color:#e4eaf1;border-color:rgba(255,255,255,.16);border-radius:5px}
+#rtop button.ic:hover{border-color:#fff}#rtop button[aria-pressed=true]{background:rgba(255,255,255,.26)}
+#rtop .run{background:#13a06f;border-color:#13a06f;color:#fff}#rtop .run[aria-pressed=true]{background:#0d7f58;box-shadow:inset 0 0 0 1px #8ef0c6}#rtop .stop{background:#c93838;border-color:#c93838;color:#fff}#rtop .pri{background:#18a096;border-color:#18a096;color:#fff}
+#rtop #stat{padding:2px 9px;font-size:10.5px;color:#cfd8e2;margin-right:3px}#rtop .vs{width:1px;height:16px;background:#3d4756;margin:0 3px}
+#rtop #menu{top:28px}
+#rtabs button{min-height:28px}
+@media (pointer:coarse){#rtop button.ic{width:34px;height:32px;min-height:32px}}
+/* ---- command line ---- */
+#cmd{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);z-index:7;width:min(440px,calc(100% - 150px));display:flex;align-items:center;gap:6px;background:rgba(31,38,48,.96);border:1px solid #4a5565;border-radius:7px;padding:3px 8px;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+#cmd .cp{color:#8fb8e8;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+#cmd input{flex:1;margin:0;border:0;background:transparent;color:#fff;min-height:26px;padding:2px 2px;font-size:13px}#cmd input:focus-visible{outline:0}#cmd input::placeholder{color:#7f8c9b}
+#cmdSug{display:none;position:absolute;left:0;right:0;bottom:calc(100% + 4px);background:#252d39;border:1px solid #4a5565;border-radius:7px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.4)}#cmdSug.show{display:block}
+#cmdSug .sg{display:flex;align-items:center;gap:8px;padding:6px 10px;color:#dfe7ef;font-size:13px;cursor:pointer}#cmdSug .sg span{flex:1}#cmdSug .sg b{color:#6fb6ff}
+#cmdSug .sg small{color:#8d9bab;font-size:11px}#cmdSug .sg kbd{font:600 10px system-ui;background:#38445a;color:#cfe3ff;border-radius:4px;padding:1px 6px}
+#cmdSug .sg.on,#cmdSug .sg:hover{background:#2f6fb3}#cmdSug .sg.on small{color:#d7e6f7}
+#sbar{bottom:52px}.chs{cursor:nwse-resize}
+@media (max-width:760px){#cmd{width:calc(100% - 20px);bottom:6px}#sbar{bottom:48px}#rest{bottom:48px}}
+
+/* drafting status bar (AutoCAD-style) */
+#sts{position:absolute;right:10px;bottom:10px;z-index:6;display:flex;align-items:center;gap:4px;background:var(--pn);border:1px solid var(--bd);border-radius:8px;padding:3px 6px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+#sts #xy{font:11px ui-monospace,Menlo,Consolas,monospace;color:var(--mu);min-width:128px;margin-right:4px}
+#sts button{font:700 10px Arial,sans-serif;padding:3px 7px;min-height:0;border:1px solid var(--bd);border-radius:5px;background:var(--pn2);color:var(--mu);cursor:pointer}
+#sts button[aria-pressed=true]{background:var(--ac);border-color:var(--ac);color:#fff}
+@media (max-width:760px){#sts #xy{display:none}#sts{right:6px;bottom:8px}}
+
+/* ===== professional polish: CAD workspace look ===== */
+:root{--bg:#cfd6de;--ac:#0a6cc4;--bd:#c3ccd6;--nv:#16222f}
+@media (prefers-color-scheme:dark){:root{--bg:#10161d;--pn:#18222d;--pn2:#202c3a;--bd:#2f3f52;--ac:#4aa3ff}}
+body{font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+#ribbon{background:linear-gradient(#323d4c,#262f3b);border-bottom:1px solid #0e131a;box-shadow:0 2px 6px rgba(0,0,0,.35);position:relative;z-index:20}
+#rtop{background:linear-gradient(#222b37,#1a212b)}
+#rtop .logo{letter-spacing:.4px;font-weight:700}#rtop .logo .lbl{color:#7fc0ff}
+#rtabs button[aria-selected=true]{background:linear-gradient(#323d4c,#2c3644);box-shadow:inset 0 2px 0 #4aa3ff}
+.rp{border-right:1px solid #1a212b;box-shadow:1px 0 0 rgba(255,255,255,.05)}
+.rp .rn{text-transform:uppercase;letter-spacing:.8px;font-size:9.5px;font-weight:600;color:#8795a6}
+#ribbon .rb{border-radius:5px}#ribbon .rb:hover:not(:disabled){background:rgba(74,163,255,.16);border-color:#4aa3ff}
+#cv{background:radial-gradient(ellipse at 50% 40%,#5a6674,#3a434f 75%)}
+@media (prefers-color-scheme:dark){#cv{background:radial-gradient(ellipse at 50% 40%,#2b3541,#161d26 80%)}}
+#gS>rect:first-child{filter:drop-shadow(0 6px 18px rgba(0,0,0,.45))}
+#lib,#props{background:var(--pn);box-shadow:0 0 14px rgba(0,0,0,.12)}
+#lib summary{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:var(--mu);padding:7px 4px;border-bottom:1px solid var(--bd)}
+#lib input[type=search]{border-radius:20px;padding:7px 12px;border:1px solid var(--bd);background:var(--pn2)}
+.item{background:var(--pn);transition:transform .12s,box-shadow .12s,border-color .12s}
+.item:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(10,108,196,.22)}
+#props h3{font-size:13px;letter-spacing:.3px;padding-bottom:6px;border-bottom:2px solid var(--ac);margin-bottom:8px}
+#props label{font-size:11.5px;color:var(--mu);font-weight:600}
+#props input,#props select,#props textarea{border:1px solid var(--bd);background:var(--pn2);border-radius:5px;padding:5px 7px;color:var(--tx)}
+#props input:focus,#props select:focus{border-color:var(--ac);outline:0;box-shadow:0 0 0 3px rgba(74,163,255,.2)}
+#ft{border-top:1px solid #0e131a;box-shadow:0 -2px 8px rgba(0,0,0,.18)}
+#ft thead th{background:var(--pn2);text-transform:uppercase;font-size:10px;letter-spacing:.7px;color:var(--mu);position:sticky;top:0}
+#ft tbody tr:nth-child(even){background:rgba(120,140,160,.07)}#ft tbody tr:hover{background:rgba(74,163,255,.14)}
+#ft td{font-variant-numeric:tabular-nums}
+.m{border-radius:5px}
+#stat{border-radius:10px;background:rgba(0,0,0,.28);font-weight:700;letter-spacing:.5px}
+#zc,#sts,#sbar{backdrop-filter:blur(6px);box-shadow:0 3px 12px rgba(0,0,0,.28)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#8a99ab66;border-radius:6px;border:2px solid transparent;background-clip:content-box}
+
+/* ===== PLC ladder editor (v7) ===== */
+#dPLC{width:min(1180px,98vw);height:min(780px,94dvh);max-width:98vw;padding:0;overflow:hidden}
+#dPLC[open]{display:flex;flex-direction:column}
+#dPLC .ph,#dPLC .ptb,#dPLC .ppr,#dPLC .pio{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--bd)}
+#dPLC .ph{background:var(--nv);color:#fff}#dPLC .ph b{font-size:15px}#dPLC .ph #plSt{font-size:12px;opacity:.85;margin-right:6px}
+#dPLC .sp{flex:1}#dPLC .vs{width:1px;height:20px;background:var(--bd);margin:0 4px}
+#dPLC button{font:inherit;font-size:13px;padding:5px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--pn2);color:var(--tx);cursor:pointer}
+#dPLC button:hover{border-color:var(--ac)}#dPLC button.pri{background:var(--ac);color:#fff;border-color:var(--ac)}#dPLC button.dn{color:var(--er)}
+#dPLC .ppr{background:var(--pn2);font-size:13px;min-height:26px}#dPLC .ppr label{display:flex;align-items:center;gap:6px;margin:0}
+#dPLC select,#dPLC input[type=number]{font:inherit;font-size:13px;padding:3px 6px;border:1px solid var(--bd);border-radius:5px;background:var(--pn);color:var(--tx);width:auto}
+#dPLC .pio{font-size:12px;color:var(--mu)}#dPLC .iot{margin:0 4px 0 8px}
+#dPLC .ioc{display:inline-block;min-width:38px;text-align:center;padding:2px 6px;border:1px solid var(--bd);border-radius:11px;font:11px ui-monospace,Menlo,Consolas,monospace;background:var(--pn);color:var(--mu)}
+#dPLC button.ioc{padding:2px 6px;font:11px ui-monospace,Menlo,Consolas,monospace}
+#dPLC .ioc.on{background:#f5c542;color:#222;border-color:#c99a10}#dPLC .ioc.q.on{background:var(--ok);color:#fff;border-color:var(--ok)}
+#dPLC .ioc.frc{outline:2px solid var(--wa);outline-offset:1px}
+#dPLC .pbody{flex:1;overflow:auto;padding:10px 12px;background:var(--bg)}
+#dPLC .rg{background:var(--pn);border:1px solid var(--bd);border-radius:8px;margin-bottom:10px;padding:6px 8px}
+#dPLC .rg.cur{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}
+#dPLC .rh{display:flex;align-items:center;gap:6px;margin-bottom:2px}#dPLC .rh b{font-size:12px;color:var(--mu);white-space:nowrap}
+#dPLC .rh .rc{flex:1;min-width:80px;max-width:420px;font:inherit;font-size:12px;padding:2px 6px;border:1px solid transparent;background:transparent;color:var(--tx);border-radius:4px}
+#dPLC .rh .rc:hover,#dPLC .rh .rc:focus{border-color:var(--bd);background:var(--pn2)}
+#dPLC .rh button{padding:1px 7px;font-size:12px}
+#dPLC .rs{overflow-x:auto}#dPLC svg{display:block;user-select:none}
+#dPLC svg text{fill:var(--tx);font:11px ui-monospace,Menlo,Consolas,monospace}
+#dPLC .hit{fill:transparent;cursor:pointer}
+#dPLC .rail{stroke:var(--tx);stroke-width:3;fill:none}
+#dPLC .lw{stroke:var(--mu);stroke-width:2;fill:none}#dPLC .lw.on{stroke:var(--ok);stroke-width:3}
+#dPLC .lc{stroke:var(--tx);stroke-width:2.5;fill:none}#dPLC .lc.on{stroke:var(--ok);stroke-width:3.5}
+#dPLC .selb{fill:rgba(74,163,255,.12);stroke:var(--ac);stroke-width:1.5;stroke-dasharray:4 3;pointer-events:none}
+
+/* v8 – configurable PLC I/O */
+#dPLC .pcfg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:6px 12px;border-bottom:1px solid var(--bd);background:var(--pn2);font-size:13px}
+#dPLC .pcfg label{display:flex;align-items:center;gap:5px;margin:0;color:var(--mu)}
+#dPLC kbd{font:11px ui-monospace,Menlo,Consolas,monospace;padding:0 4px;border:1px solid var(--bd);border-radius:3px;background:var(--pn)}
+#dPLC .ppr label{color:var(--mu)}
+#dPLC .ppr input[type=text]{font:inherit;font-size:13px;padding:3px 6px;border:1px solid var(--bd);border-radius:5px;background:var(--pn);color:var(--tx);width:150px}
+#dPLC .pio{max-height:120px;overflow:auto}
+#dPLC .ioc i{font-style:normal;font-size:10px;color:inherit;opacity:.75;margin-left:5px}
+#dPLC .aic{display:inline-flex;align-items:center;gap:6px;padding:1px 8px;border:1px solid var(--bd);border-radius:11px;background:var(--pn);font:11px ui-monospace,Menlo,Consolas,monospace}
+#dPLC .aic i{font-style:normal;opacity:.75}#dPLC .aic input[type=range]{width:90px;padding:0}
+#dPLC .aic.frc{outline:2px solid var(--wa);outline-offset:1px}
+#dPLC .ioc b{font-weight:600;margin-left:3px}
+#dPLC svg text.tg{fill:var(--mu);font-size:9.5px;font-style:italic}
+table.iomap{width:100%;border-collapse:collapse;font-size:12px;margin:2px 0 6px}table.iomap td{padding:2px 4px;border-bottom:1px solid var(--bd)}table.iomap td:first-child{color:var(--mu);white-space:nowrap}
+#dPLC [hidden]{display:none!important}
+
+/* transmitter help */
+.hlp{float:right;margin:0;padding:3px 10px;font-size:12px}
+#dTXH{width:min(740px,96vw)}#dTXH h2{margin:0 0 6px}#dTXH h4{margin:16px 0 4px;font-size:13px;color:var(--ac)}
+#dTXH p,#dTXH li{font-size:12.5px;line-height:1.5}#dTXH ul,#dTXH ol{margin:4px 0 4px 18px;padding:0}
+#dTXH .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}#dTXH .tabs button{margin:0}
+#dTXH table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}#dTXH td,#dTXH th{border:1px solid var(--bd);padding:4px 6px;text-align:left;vertical-align:top}
+#dTXH svg{width:100%;height:auto;background:var(--pn2);border:1px solid var(--bd);border-radius:8px}
+#dTXH code{background:var(--pn2);padding:1px 4px;border-radius:3px;font-size:11.5px}
+/* valve help */
+#dVLH{width:min(740px,96vw)}#dVLH h2{margin:0 0 6px}#dVLH h4{margin:16px 0 4px;font-size:13px;color:var(--ac)}
+#dVLH p,#dVLH li{font-size:12.5px;line-height:1.5}#dVLH ul,#dVLH ol{margin:4px 0 4px 18px;padding:0}
+#dVLH .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}#dVLH .tabs button{margin:0}
+#dVLH table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}#dVLH td,#dVLH th{border:1px solid var(--bd);padding:4px 6px;text-align:left;vertical-align:top}
+#dVLH svg{width:100%;height:auto;background:var(--pn2);border:1px solid var(--bd);border-radius:8px}
+#dVLH code{background:var(--pn2);padding:1px 4px;border-radius:3px;font-size:11.5px}
+
+/* ===== HMI designer (v8.18, screens + alarms v8.19) ===== */
+#dHMI{width:min(1240px,98vw);height:min(800px,94dvh);max-width:98vw;padding:0;overflow:hidden}
+#dHMI[open]{display:flex;flex-direction:column}
+#dHMI .hh{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 12px;background:var(--nv);color:#fff}#dHMI .hh b{font-size:15px;margin-right:8px}#dHMI .sp{flex:1}#dHMI #hdSt{font-size:12px;opacity:.85;margin-right:6px}
+#dHMI .seg{display:inline-flex;border:1px solid rgba(255,255,255,.3);border-radius:8px;overflow:hidden}#dHMI .seg button{border:0;border-radius:0;background:transparent;color:#fff;opacity:.75}#dHMI .seg button.on{background:var(--ac);opacity:1}
+#dHMI .hh>button{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}#dHMI .hh>button.pri{background:var(--ac);border-color:var(--ac);margin:0}
+#dHMI .hb{flex:1;min-height:0;display:grid;grid-template-columns:190px minmax(0,1fr) 280px}
+#dHMI h4{margin:2px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mu)}
+#dHMI .hpal{padding:8px;border-right:1px solid var(--bd);background:var(--pn);overflow:auto;display:flex;flex-direction:column;gap:10px}#dHMI .hwid{display:flex;flex-direction:column;gap:6px}
+#dHMI .hwid button{display:flex;align-items:center;gap:8px;text-align:left;font-weight:600;padding:6px 8px}#dHMI .hwid button i{font-style:normal;width:20px;text-align:center;font-size:16px;color:var(--ac)}
+#dHMI.sim .hpal{opacity:.55}
+#dHMI .hcv{position:relative;overflow:auto;display:flex;background:#161d25;padding:24px}
+#dHMI .hcv svg{margin:auto;flex:none;display:block;border-radius:4px;box-shadow:0 0 0 6px #2b3138,0 10px 30px rgba(0,0,0,.5);user-select:none;touch-action:none;font-family:Arial,sans-serif}
+#dHMI.sim .hcv svg{box-shadow:0 0 0 6px #1d6b44,0 10px 30px rgba(0,0,0,.5)}
+#dHMI .hz{position:absolute;right:10px;top:8px;z-index:2;display:flex;align-items:center;gap:4px;background:var(--pn);border:1px solid var(--bd);border-radius:8px;padding:3px}#dHMI .hz button{min-height:26px;padding:2px 9px}#dHMI .hz span{min-width:46px;text-align:center;font-size:11px;color:var(--mu)}
+#dHMI .hpr{padding:10px;border-left:1px solid var(--bd);background:var(--pn);overflow:auto}
+#dHMI .hpr label{display:block;margin:0 0 8px;font-size:12px;color:var(--mu)}#dHMI .hpr label.ck{display:flex;align-items:center;gap:6px;color:var(--tx)}
+#dHMI .hpr input[type=text],#dHMI .hpr input[type=number],#dHMI .hpr select{display:block;width:100%;margin-top:3px;padding:5px 7px;font-size:13px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx)}
+#dHMI .hpr .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}#dHMI .hpr .row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+#dHMI .hw{margin:4px 0;padding:4px 8px;border-left:3px solid var(--wa);background:rgba(217,132,0,.12);border-radius:4px;font-size:12px}
+/* screen list (phase 2) */
+#dHMI .hscr{display:flex;flex-direction:column;gap:4px}
+#dHMI .hsl{display:flex;flex-direction:column;gap:2px;max-height:190px;overflow:auto;border:1px solid var(--bd);border-radius:6px;background:var(--bg);padding:2px}
+#dHMI .si{display:flex;align-items:center;gap:6px;padding:5px 6px;border-radius:5px;cursor:pointer;font-size:13px;user-select:none;border:1px solid transparent}
+#dHMI .si i{font-style:normal;width:16px;text-align:center;color:var(--ac);flex:none}#dHMI .si span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#dHMI .si.on{background:rgba(45,125,210,.16);border-color:var(--ac);font-weight:600}
+#dHMI .si input.ren{flex:1;min-width:0;width:100%;padding:1px 4px;font-size:13px;border:1px solid var(--ac);border-radius:4px;background:var(--bg);color:var(--tx)}
+#dHMI .hst{display:flex;gap:4px}#dHMI .hst button{flex:1;padding:4px 4px;font-size:12px;font-weight:600}
+/* alarm definition rows (inspector) */
+#dHMI .hpr .al{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:4px;margin:0 0 6px;padding:4px 4px 4px 6px;border-left:4px solid var(--wa);background:rgba(127,127,127,.08);border-radius:4px}
+#dHMI .hpr .al input,#dHMI .hpr .al select{margin:0;padding:4px 6px;font-size:12px;border:1px solid var(--bd);border-radius:5px;background:var(--bg);color:var(--tx);min-width:0;width:100%}
+#dHMI .hpr .al .wide{grid-column:1/-1}#dHMI .hpr .al button{padding:0 8px;min-height:26px}
+#dHMI [hidden]{display:none!important}
+@media (max-width:820px){#dHMI .hb{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) minmax(0,38%)}#dHMI .hpal{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--bd);align-items:flex-start}#dHMI .hscr{flex:none;width:210px}#dHMI .hsl{max-height:96px}#dHMI .hwid{flex:none;flex-direction:row;flex-wrap:nowrap}#dHMI .hwid h4{display:none}#dHMI .hwid button{flex:none}#dHMI .hpr{border-left:0;border-top:1px solid var(--bd)}}
+/* v8.20 HMI process graphics: symbol palette, animation rows */
+#dHMI .hsym{display:grid;grid-template-columns:1fr 1fr;gap:6px}#dHMI .hsym button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;font-size:11px;font-weight:600}
+#dHMI .hsym svg{width:24px;height:24px;fill:none;stroke:var(--ac);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+#dHMI .hpr .an{margin:0 0 8px;padding:6px 6px 2px 8px;border-left:4px solid var(--ac);background:rgba(127,127,127,.08);border-radius:4px}
+#dHMI .hpr .an .anh{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:12px}#dHMI .hpr .an .anh button{padding:0 8px;min-height:24px}
+#dHMI .hpr .an input[type=text],#dHMI .hpr .an input[type=number],#dHMI .hpr .an select{margin-bottom:6px}
+#dHMI .hpr .row select{flex:1;min-width:0;padding:5px 7px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx)}
+
+/* ===== PLC editor – TIA Portal style (v8.21) ===== */
+#dPLC{--hd:#dfe9f3;--hd2:#c9d9e8;--hdt:#1d4f7c;--rl:#1d4f7c;--slf:rgba(11,122,117,.10);width:min(1360px,99vw);height:min(880px,97dvh);max-width:99vw}
+@media (prefers-color-scheme:dark){#dPLC{--hd:#1f2e3f;--hd2:#2a3d52;--hdt:#8fc3f0;--rl:#7fb4e6;--slf:rgba(53,194,185,.12)}}
+#dPLC .ptb{background:var(--pn2);padding:5px 10px;gap:5px}
+#dPLC .ptb .zm{display:flex;align-items:center;gap:5px;color:var(--mu);margin:0}
+#dPLC .pmain{flex:1;display:flex;min-height:0}
+#dPLC .ptree{width:178px;flex:none;border-right:1px solid var(--bd);background:var(--pn2);overflow:auto;padding:0 0 8px}
+#dPLC .pt0{font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:var(--nv);padding:6px 10px}
+#dPLC .pt1,#dPLC .pt2{padding:5px 10px;font-size:12px;font-weight:600;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dPLC .pt2{padding-left:14px}
+#dPLC .ptree .ti{display:block;width:calc(100% - 12px);margin:1px 6px 1px 6px;text-align:left;border-color:transparent;background:transparent;padding:5px 8px 5px 18px;font-size:12.5px}
+#dPLC .ptree .ti:hover{background:var(--hd)}#dPLC .ptree .ti.on{background:var(--hd2);color:var(--hdt);font-weight:700;border-color:var(--hd2)}
+#dPLC .pctr{flex:1;min-width:0;display:flex;flex-direction:column}
+#dPLC .pbody,#dPLC .ptags,#dPLC .pcfgv{flex:1;min-height:0;overflow:auto;background:var(--bg)}
+#dPLC .pbody{padding:10px 12px 40px}
+#dPLC .ppr{border-top:1px solid var(--bd);border-bottom:0;max-height:96px;overflow:auto;background:var(--pn2)}
+#dPLC .pph{font-weight:700;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--hdt);margin-right:6px}
+#dPLC .pio-w{border-top:1px solid var(--bd);background:var(--pn)}
+#dPLC .pio-w>summary{cursor:pointer;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--hdt);background:var(--hd);list-style:none}
+#dPLC .pio-w>summary::before{content:"▾ "}#dPLC .pio-w:not([open])>summary::before{content:"▸ "}
+#dPLC .pio-w .pio{border-bottom:0;max-height:104px}
+/* networks */
+#dPLC .rg{padding:0;overflow:hidden;border-radius:4px;margin:0}
+#dPLC .rg .rh{background:var(--hd);margin:0;padding:3px 8px;border-bottom:1px solid var(--hd2)}
+#dPLC .rg .rh b{color:var(--hdt);font-size:13px}
+#dPLC .rg.cur .rh{background:var(--hd2)}
+#dPLC .rg .chev{padding:0 6px;border-color:transparent;background:transparent;font-size:13px}
+#dPLC .rg .rt{flex:1;min-width:90px;max-width:360px;font:inherit;font-weight:600;font-size:13px;padding:2px 6px;border:1px solid transparent;background:transparent;color:var(--tx);border-radius:3px}
+#dPLC .rg .rt:hover,#dPLC .rg .rt:focus{border-color:var(--bd);background:var(--pn)}
+#dPLC .rg>.rc{display:block;width:100%;box-sizing:border-box;font:italic 12px system-ui,sans-serif;padding:3px 10px;border:0;border-bottom:1px dashed var(--bd);background:transparent;color:var(--mu)}
+#dPLC .rg>.rc:focus{outline:0;background:var(--pn2);color:var(--tx)}
+#dPLC .rg .rs{padding:6px 6px 4px;overflow-x:auto}
+#dPLC .rg.col{opacity:.9}
+#dPLC .ins{display:block;width:100%;height:14px;min-height:0;padding:0;margin:0;border:0;background:transparent;position:relative;opacity:.0;transition:opacity .12s;cursor:pointer}
+#dPLC .ins:hover,#dPLC .ins:focus-visible{opacity:1}
+#dPLC .ins span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px;padding:0 10px;background:var(--bg);color:var(--ac);font-weight:700}
+#dPLC .ins::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px dashed var(--ac)}
+#dPLC .rail{stroke:var(--rl);stroke-width:4}
+#dPLC .bxh{fill:var(--hd);stroke:none}
+#dPLC svg text.bxt{font-weight:700;font-size:9.5px;fill:var(--hdt)}
+#dPLC svg text.pin{font-size:8px;fill:var(--mu)}
+#dPLC svg text.phx{fill:var(--mu);font:italic 11px system-ui,sans-serif}
+#dPLC .phb{fill:none;stroke:var(--bd);stroke-width:1.5;stroke-dasharray:4 3}
+#dPLC .rs svg{cursor:default}#dPLC .rs .hit{cursor:grab}
+/* drop slots */
+#dPLC .sl{fill:transparent;stroke:none;pointer-events:none}
+#dPLC.dg-c .sl.c,#dPLC.dg-o .sl.o{fill:var(--slf);stroke:var(--ac);stroke-width:1;stroke-dasharray:3 3}
+#dPLC.dg .sl.hot{fill:var(--ac);fill-opacity:.4;stroke-dasharray:none;stroke-width:1.5}
+#dPLC.dg,#dPLC.dg *{cursor:grabbing!important;user-select:none;-webkit-user-select:none}
+#dPLC .dgh{position:fixed;z-index:9999;pointer-events:none;padding:4px 10px;border-radius:6px;background:var(--ac);color:#fff;font:700 12px ui-monospace,Menlo,Consolas,monospace;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+/* Instructions task card */
+#dPLC .pins{width:208px;flex:none;border-left:1px solid var(--bd);overflow:auto;background:var(--pn2);padding-bottom:10px}
+#dPLC .phint{font-size:11px;color:var(--mu);padding:6px 10px}
+#dPLC .pins details>summary{cursor:pointer;padding:5px 10px;font-size:12px;font-weight:700;background:var(--hd);color:var(--hdt);border-top:1px solid var(--hd2);list-style:none}
+#dPLC .pins details>summary::before{content:"▾ "}#dPLC .pins details:not([open])>summary::before{content:"▸ "}
+#dPLC .pins .gb{padding:4px 6px;display:flex;flex-direction:column;gap:3px}
+#dPLC .pins .gb.sm{flex-direction:row;flex-wrap:wrap}
+#dPLC .pi{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:4px 8px;touch-action:none;cursor:grab;background:var(--pn)}
+#dPLC .pi .sy{min-width:34px;text-align:center;font:700 13px ui-monospace,Menlo,Consolas,monospace;color:var(--hdt)}
+#dPLC .pi .nm{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#dPLC .gb.sm .pi{width:calc(50% - 2px);padding:4px 6px;gap:4px}#dPLC .gb.sm .pi .nm{display:none}#dPLC .gb.sm .pi .sy{min-width:0;flex:1}
+#dPLC .pins.dis,#dPLC .ptb .dis{opacity:.45}
+/* tag table + configuration */
+#dPLC .tgh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:8px 12px;background:var(--pn);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:1}
+#dPLC .tgh input[type=search]{margin-left:auto;font:inherit;font-size:13px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px;background:var(--pn2);color:var(--tx)}
+#dPLC .tgt{width:100%;border-collapse:collapse;background:var(--pn);font-size:13px}
+#dPLC .tgt th{position:sticky;top:41px;text-align:left;background:var(--hd);color:var(--hdt);font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:5px 10px}
+#dPLC .tgt td{padding:2px 10px;border-bottom:1px solid var(--bd)}
+#dPLC .tgt input{width:100%;box-sizing:border-box;font:inherit;padding:3px 6px;border:1px solid transparent;background:transparent;color:var(--tx);border-radius:3px}
+#dPLC .tgt input:hover,#dPLC .tgt input:focus{border-color:var(--bd);background:var(--pn2)}
+#dPLC .tgt tr[hidden]{display:none}
+#dPLC .cfg{display:flex;flex-wrap:wrap;gap:12px;padding:12px}
+#dPLC .cfg>label,#dPLC .cfg fieldset label{display:flex;flex-direction:column;gap:3px;color:var(--mu);font-size:12px;margin:0}
+#dPLC .cfg fieldset{display:flex;gap:12px;flex-wrap:wrap;border:1px solid var(--bd);border-radius:6px;padding:8px 12px;background:var(--pn)}
+#dPLC .cfg legend{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--hdt);padding:0 4px}
+@media (max-width:900px){
+ #dPLC{width:100vw;height:100dvh;max-width:100vw;max-height:100dvh;border-radius:0}
+ #dPLC .pmain{flex-direction:column}
+ #dPLC .ptree{width:auto;display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--bd);padding:0}
+ #dPLC .ptree .pt0,#dPLC .ptree .pt1,#dPLC .ptree .pt2{display:none}
+ #dPLC .ptree .ti{width:auto;margin:3px;white-space:nowrap;padding:5px 10px}
+ #dPLC .pins{order:-0;width:auto;max-height:104px;border-left:0;border-top:1px solid var(--bd);display:flex;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;padding:4px}
+ #dPLC .pins .pt0,#dPLC .pins .phint,#dPLC .pins summary{display:none}
+ #dPLC .pins details,#dPLC .pins .gb{display:contents}
+ #dPLC .pins .pi,#dPLC .pins .gb.sm .pi{width:auto;flex:none;margin:2px;white-space:nowrap}#dPLC .pins .gb.sm .pi .nm,#dPLC .pins .pi .nm{display:inline;max-width:90px}
+ #dPLC .pins .gb.sm .pi .nm{display:none}
+ #dPLC .pctr{order:-1}
+ #dPLC .ppr{max-height:84px}
+}

@@ -20,10 +20,10 @@ async function iconImage(type){if(iconCache[type])return iconCache[type];const{v
  const url=await rasterSVG(buildSVG(inner,vb,vb[2]*sc,vb[3]*sc),vb[2]*sc,vb[3]*sc,'image/png');return(iconCache[type]={url,w:vb[2],h:vb[3]})}
 
 /* ===== parts list data ===== */
-function specOf(c){const d=D[c.type],o=[];for(const k in d.p){const[,u,nm]=d.p[k];if(u==='txt')continue;o.push(`${nm}: ${c.p[k]}${u?' '+u:''}`)}return o}
+function specOf(c){const d=D[c.type],o=[],P=d.pv?d.pv(c):d.p;for(const k in P){const[,u0,nm]=P[k],u=typeof u0==='function'?u0(c):u0;if(u==='txt')continue;o.push(`${nm}: ${c.p[k]}${u?' '+u:''}`)}return o}
 function bomRows(){const map=new Map(),order=[...new Set(Object.values(D).map(d=>d.cat))];
  S.comps.forEach(c=>{const d=D[c.type];if(d.bom===0)return;const key=[c.type,JSON.stringify(c.p),c.mf||'',c.pn||''].join('|');let r=map.get(key);
-  if(!r){r={type:c.type,cat:d.cat,ds:d.ds,spec:specOf(c),mf:c.mf||'',pn:c.pn||'',labels:[],pages:new Set()};map.set(key,r)}r.labels.push(c.label);r.pages.add(pnum(c.pg))});
+  if(!r){r={type:c.type,cat:d.cat,ds:d.nv?d.nv(c):d.ds,spec:specOf(c),mf:c.mf||'',pn:c.pn||'',labels:[],pages:new Set()};map.set(key,r)}r.labels.push(c.label);r.pages.add(pnum(c.pg))});
  return[...map.values()].sort((a,b)=>order.indexOf(a.cat)-order.indexOf(b.cat)||natCmp(a.ds,b.ds)).map(r=>{r.labels.sort(natCmp);return r})}
 
 /* ===== frame for parts-list pages ===== */
@@ -85,9 +85,11 @@ async function drawBOM(doc,pw,ph,needAdd,prog){
 
 async function exportPDF(opt,prog){
  const J=window.jspdf&&window.jspdf.jsPDF;if(!J)throw new Error('PDF library (js/vendor/jspdf.umd.min.js) did not load');
- const[pw,ph]=PAPER[S.tb.paper]||PAPER.A4,doc=new J({orientation:'landscape',unit:'mm',format:[pw,ph],compress:true});let first=1;
- if(opt.sheets)for(let i=0;i<S.pages.length;i++){prog&&prog(`Rendering sheet ${i+1} of ${S.pages.length}…`);
-  const url=await sheetImage(i);if(!first)doc.addPage([pw,ph],'landscape');first=0;doc.addImage(url,'JPEG',0,0,pw,ph,undefined,'FAST')}
- if(opt.bom)await drawBOM(doc,pw,ph,!first,prog);
+ const[Wp,Hp]=paperPx(),pw=Wp/U,ph=Hp/U,ori=pw>=ph?'landscape':'portrait',lw=Math.max(pw,ph),lh=Math.min(pw,ph);
+ const doc=opt.sheets?new J({orientation:ori,unit:'mm',format:[pw,ph],compress:true}):new J({orientation:'landscape',unit:'mm',format:[lw,lh],compress:true});let first=1;
+ const idx=opt.range==='cur'?[pidx()]:S.pages.map((_,i)=>i);
+ if(opt.sheets)for(const i of idx){prog&&prog(`Rendering sheet ${i+1} of ${S.pages.length}…`);
+  const url=await sheetImage(i);if(!first)doc.addPage([pw,ph],ori);first=0;doc.addImage(url,'JPEG',0,0,pw,ph,undefined,'FAST')}
+ if(opt.bom)await drawBOM(doc,lw,lh,!first,prog);
  doc.setProperties({title:pdfTxt(S.tb.project||'ElectroSim drawing'),author:'',creator:'ElectroSim'});
  return doc}
